@@ -17,7 +17,6 @@ namespace TV
         [SerializeField] private float maximumPivot = 60f;
         [SerializeField] float cameraCollisionRadius = 0.2f;
         [SerializeField] private LayerMask collideWithLayers;
-        [SerializeField] private float cameraDistance = 5f; // Khoảng cách từ camera đến nhân vật
 
         [Header("Camera Values")]
         private Vector3 cameraVelocity;

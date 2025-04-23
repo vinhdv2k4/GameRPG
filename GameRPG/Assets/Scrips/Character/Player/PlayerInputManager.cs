@@ -5,6 +5,9 @@ namespace TV
     public class PlayerInputManager : MonoBehaviour
     {
         public static PlayerInputManager instance;
+        public PlayerManager player;
+
+
         PlayerControlls playerControll;
 
         [Header("Player Movement")]
@@ -17,6 +20,9 @@ namespace TV
         [SerializeField] public Vector2 cameraInput;
         public float cameraVerticalInput;
         public float cameraHorizontalInput;
+
+        [Header("Player Actions Input")]
+        [SerializeField ] bool  dodgeInput =false;
         private void Awake()
         {
             if (instance == null)
@@ -61,6 +67,7 @@ namespace TV
                 playerControll.PlayerMovement.Movement.canceled += i => movement = Vector2.zero;
                 playerControll.PlayerCamera.Movement.performed += i => cameraInput = i.ReadValue<Vector2>();
                 playerControll.PlayerCamera.Movement.canceled += i => cameraInput = Vector2.zero;
+                playerControll.PlayerActions.Dodge.performed += i => dodgeInput = true;
             }
             playerControll.Enable();
 
@@ -88,10 +95,15 @@ namespace TV
 
         private void Update()
         {
-            HandlePlayerMovement();
-            HandeleCameraMovement();
+            HandleAllInputs();
 
         }
+        private void HandleAllInputs()
+        {
+            HandeleCameraMovement();
+            HandlePlayerMovement();
+            HandleDodgeInput();
+        } 
         private void HandlePlayerMovement()
         {
             verticalInput = movement.y;
@@ -106,12 +118,27 @@ namespace TV
             {
                 moveAmount = 1f;
             }
-        }
+            if (player == null)
+                return;
+            // if are not locked on, only use move amount
+            player.playerAnimatorManager.UpadateAnimatorMovementParameters(0,moveAmount);
 
+        }
+        
         private void HandeleCameraMovement()
         {
             cameraVerticalInput = cameraInput.y;
             cameraHorizontalInput = cameraInput.x;
+        }
+
+        private void HandleDodgeInput()
+        {
+            if (dodgeInput)
+            {
+                dodgeInput = false;
+                player.playerLocomotionManager.AttemptToPerformmDodge();
+                 
+            }
         }
     }
 }

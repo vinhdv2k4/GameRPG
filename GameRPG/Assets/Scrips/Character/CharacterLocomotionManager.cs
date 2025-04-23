@@ -7,5 +7,9 @@ public class CharaterLocomotionManager : MonoBehaviour
     {
         // Initialize the character locomotion manager
     }
+        protected virtual void Update()
+        {
+
+        }
 }
 }

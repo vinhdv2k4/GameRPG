@@ -70,7 +70,13 @@ PrefabInstance:
       addedObject: {fileID: 6490515229965462002}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 200366a911d4e4d4e8ef3cb01d38c82a, type: 3}
       insertIndex: -1
+      addedObject: {fileID: -1157735502656686036}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 200366a911d4e4d4e8ef3cb01d38c82a, type: 3}
+      insertIndex: -1
       addedObject: {fileID: 1941887747783264069}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 200366a911d4e4d4e8ef3cb01d38c82a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -8005869248301485149}
   m_SourcePrefab: {fileID: 100100000, guid: 200366a911d4e4d4e8ef3cb01d38c82a, type: 3}
 --- !u!1 &4244429042826304332 stripped
 GameObject:
@@ -89,8 +95,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 1723061628
-  InScenePlacedSourceGlobalObjectIdHash: 0
+  GlobalObjectIdHash: 1664542227
+  InScenePlacedSourceGlobalObjectIdHash: 1664542227
   DeferredDespawnTick: 0
   Ownership: 1
   AlwaysReplicateAsRoot: 0
@@ -116,7 +122,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
   characterController: {fileID: 0}
+  animator: {fileID: 0}
   characterNetworkManager: {fileID: 0}
+  isPerformingAction: 0
+  canMove: 1
+  canRotate: 1
+  playerAnimatorManager: {fileID: 0}
   playerLocomotionManager: {fileID: 0}
 --- !u!143 &285781573843634807
 CharacterController:
@@ -142,7 +153,7 @@ CharacterController:
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 0.87, z: 0}
+  m_Center: {x: 0, y: 0.97, z: 0}
 --- !u!114 &6490515229965462002
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -163,6 +174,24 @@ MonoBehaviour:
   networkPositionVelocity: {x: 0, y: 0, z: 0}
   networkPositionSmoothTime: 0.1
   networkRotationSmoothTime: 0.1
+  networkAnimatorHorizontal:
+    m_InternalValue: 0
+  networkAnimatorVertical:
+    m_InternalValue: 0
+  networkAnimatorMoveAmout:
+    m_InternalValue: 0
+--- !u!114 &-1157735502656686036
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4244429042826304332}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9181a5bfb5ddd24abbc98a121540298, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1941887747783264069
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -180,5 +209,27 @@ MonoBehaviour:
   horizontalMovement: 0
   moveAmount: 0
   walkSpeed: 2
-  runSpeed: 5
+  runSpeed: 3.5
   speedRotation: 15
+--- !u!95 &-8005869248301485149
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4244429042826304332}
+  m_Enabled: 1
+  m_Avatar: {fileID: 9000000, guid: 200366a911d4e4d4e8ef3cb01d38c82a, type: 3}
+  m_Controller: {fileID: 9100000, guid: 312e3727c3d7e17429f6101db29a3e0f, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0

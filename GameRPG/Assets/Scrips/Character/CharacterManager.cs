@@ -4,15 +4,24 @@ namespace TV
 {
     public class CharacterManager : NetworkBehaviour
     {
-        public CharacterController characterController;
+        [HideInInspector] public CharacterController characterController;
+        [HideInInspector] public Animator animator;
 
         [HideInInspector] public CharacterNetworkManager characterNetworkManager;
+
+        [Header ("Flags")]
+         public bool isPerformingAction;
+        public bool applyRootMotion = false;
+        public bool canMove = true;
+        public bool canRotate = true;
         protected virtual void Awake()
         {
 
             DontDestroyOnLoad(this);
             characterController = GetComponent<CharacterController>();
+            animator = GetComponent<Animator>();
             characterNetworkManager = GetComponent<CharacterNetworkManager>();
+            
         }
         protected virtual void Update()
         {
