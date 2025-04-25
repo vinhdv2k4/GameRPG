@@ -23,6 +23,7 @@ namespace TV
 
         [Header("Player Actions Input")]
         [SerializeField ] bool  dodgeInput =false;
+        [SerializeField] bool sprintInput = false;
         private void Awake()
         {
             if (instance == null)
@@ -64,10 +65,15 @@ namespace TV
             {
                 playerControll = new PlayerControlls();
                 playerControll.PlayerMovement.Movement.performed += i => movement = i.ReadValue<Vector2>();
-                playerControll.PlayerMovement.Movement.canceled += i => movement = Vector2.zero;
+
                 playerControll.PlayerCamera.Movement.performed += i => cameraInput = i.ReadValue<Vector2>();
                 playerControll.PlayerCamera.Movement.canceled += i => cameraInput = Vector2.zero;
+
                 playerControll.PlayerActions.Dodge.performed += i => dodgeInput = true;
+
+                // hold input , set bool =true and release set bool = false
+                playerControll.PlayerActions.Sprint.performed += i => sprintInput = true;
+                playerControll.PlayerActions.Sprint.canceled += i => sprintInput = false;
             }
             playerControll.Enable();
 
@@ -103,6 +109,7 @@ namespace TV
             HandeleCameraMovement();
             HandlePlayerMovement();
             HandleDodgeInput();
+            HandleSprintInput();
         } 
         private void HandlePlayerMovement()
         {
@@ -121,7 +128,7 @@ namespace TV
             if (player == null)
                 return;
             // if are not locked on, only use move amount
-            player.playerAnimatorManager.UpadateAnimatorMovementParameters(0,moveAmount);
+            player.playerAnimatorManager.UpadateAnimatorMovementParameters(0, moveAmount, player.playerNetworkManager.isSprinting.Value);
 
         }
         
@@ -138,6 +145,17 @@ namespace TV
                 dodgeInput = false;
                 player.playerLocomotionManager.AttemptToPerformmDodge();
                  
+            }
+        }
+        private void HandleSprintInput()
+        {
+            if (sprintInput)
+            {
+                player.playerLocomotionManager.HandleSprinting();
+            }
+            else
+            {
+               player.playerNetworkManager.isSprinting.Value = false;
             }
         }
     }

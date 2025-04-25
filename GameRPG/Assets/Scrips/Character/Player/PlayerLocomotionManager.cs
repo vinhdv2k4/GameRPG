@@ -14,6 +14,7 @@ namespace TV
         private Vector3 targetRotationDirection;
         [SerializeField] float walkSpeed = 2f;
         [SerializeField] float runSpeed = 5f;
+        [SerializeField] float sprintSpeed = 7f;
         [SerializeField] float speedRotation = 15f;
 
         [Header("Dodge Setting")]
@@ -41,7 +42,7 @@ namespace TV
                 horizontalMovement = player.characterNetworkManager.networkAnimatorHorizontal.Value;
                 moveAmount = player.characterNetworkManager.networkAnimatorMoveAmout.Value;
 
-                player.playerAnimatorManager.UpadateAnimatorMovementParameters(0, moveAmount);
+                player.playerAnimatorManager.UpadateAnimatorMovementParameters(0, moveAmount, player.playerNetworkManager.isSprinting.Value);
             }
 
         }
@@ -67,16 +68,23 @@ namespace TV
             moveDirection += PlayerCamera.instance.transform.right * horizontalMovement;
             moveDirection.Normalize();
             moveDirection.y = 0;
+            if (player.playerNetworkManager.isSprinting.Value)
+            {
+                player.characterController.Move(moveDirection * sprintSpeed*Time.deltaTime);
+            }
+            else
+            {
+                if (PlayerInputManager.instance.moveAmount > 0.5)
+                {
+                    player.characterController.Move(moveDirection * runSpeed * Time.deltaTime);
+                }
+                else if (PlayerInputManager.instance.moveAmount <= 0.5)
+                {
+                    player.characterController.Move(moveDirection * walkSpeed * Time.deltaTime);
+                }
 
-            if (PlayerInputManager.instance.moveAmount > 0.5)
-            {
-                player.characterController.Move(moveDirection * runSpeed * Time.deltaTime);
             }
-            else if (PlayerInputManager.instance.moveAmount <= 0.5)
-            {
-                player.characterController.Move(moveDirection * walkSpeed * Time.deltaTime);
-            }
-        }
+         }
         private void HandleRotation()
         {
             if (!player.canRotate)
@@ -94,6 +102,21 @@ namespace TV
             Quaternion targetRotation = Quaternion.Slerp(transform.rotation, newRotation, speedRotation * Time.deltaTime);
             transform.rotation = targetRotation;
 
+        }
+        public void HandleSprinting()
+        {
+            if (player.isPerformingAction)
+            {
+                player.playerNetworkManager.isSprinting.Value = false;
+            }
+            if (moveAmount >= 0.5)
+            {
+                player.playerNetworkManager.isSprinting.Value = true;
+            }
+            else
+            {
+                player.playerNetworkManager.isSprinting.Value = false;
+            }
         }
 
         public void AttemptToPerformmDodge()

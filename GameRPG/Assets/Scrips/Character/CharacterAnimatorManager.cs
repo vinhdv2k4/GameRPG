@@ -1,22 +1,32 @@
 using Unity.IO.LowLevel.Unsafe;
+using Unity.Netcode;
 using UnityEngine;
 namespace TV
 {
     public class CharacterAnimatorManager : MonoBehaviour
     {
         CharacterManager character;
-        float horizontal;
-        float vertical;
+        int horizontal;
+        int vertical;
         protected virtual void Awake()
         {
             character = GetComponent<CharacterManager>();
+            vertical = Animator.StringToHash("Vertical");
+            horizontal = Animator.StringToHash("Horizontal");
         }
-        public void UpadateAnimatorMovementParameters(float horizontalValue, float verticalValue)
+        public void UpadateAnimatorMovementParameters(float horizontalMovement, float verticalMovement, bool isSprinting)
         {
-            
-            character.animator.SetFloat("Horizontal", horizontalValue, 0.1f, Time.deltaTime);
-            character.animator.SetFloat("Vertical", verticalValue, 0.1f, Time.deltaTime);
+            float horizontalAmount = horizontalMovement;
+            float verticalAmount = verticalMovement;
+            if (isSprinting)
+            {
+                verticalAmount = 2f;
+            }
+
+            character.animator.SetFloat(horizontal, horizontalAmount, 0.1f, Time.deltaTime);
+            character.animator.SetFloat(vertical, verticalAmount, 0.1f, Time.deltaTime);
         }
+
 
 
         public virtual void PlayerTargetActionAnimation(
@@ -33,6 +43,10 @@ namespace TV
             character.isPerformingAction = isPerformingAction;
             character.canMove = canMove;
             character.canRotate = canRotate;
+            character.characterNetworkManager.NotifiTheServerActionAnimationServerRpc(
+                NetworkManager.Singleton.LocalClientId,
+                targetAnimation,
+                applyRootMotion);
         }
     }
 }
