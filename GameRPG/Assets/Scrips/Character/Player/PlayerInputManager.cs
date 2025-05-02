@@ -128,7 +128,7 @@ namespace TV
             if (player == null)
                 return;
             // if are not locked on, only use move amount
-            player.playerAnimatorManager.UpadateAnimatorMovementParameters(0, moveAmount, player.playerNetworkManager.isSprinting.Value);
+            player.playerAnimatorManager.UpdateAnimatorMovementParameters(0, moveAmount, player.playerNetworkManager.isSprinting.Value);
 
         }
         

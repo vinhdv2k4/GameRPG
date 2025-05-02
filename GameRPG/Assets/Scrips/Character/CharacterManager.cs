@@ -14,6 +14,9 @@ namespace TV
         public bool applyRootMotion = false;
         public bool canMove = true;
         public bool canRotate = true;
+
+       
+
         protected virtual void Awake()
         {
 
@@ -44,5 +47,7 @@ namespace TV
 
         protected virtual void LateUpdate() { 
         }
+
+        
     }
 }

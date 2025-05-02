@@ -61,10 +61,10 @@ PrefabInstance:
       addedObject: {fileID: 1336375951902641981}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 200366a911d4e4d4e8ef3cb01d38c82a, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1508942988764959476}
+      addedObject: {fileID: 4479657038814786648}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 200366a911d4e4d4e8ef3cb01d38c82a, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 285781573843634807}
+      addedObject: {fileID: 1508942988764959476}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 200366a911d4e4d4e8ef3cb01d38c82a, type: 3}
       insertIndex: -1
       addedObject: {fileID: -1157735502656686036}
@@ -73,13 +73,16 @@ PrefabInstance:
       addedObject: {fileID: 1941887747783264069}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 200366a911d4e4d4e8ef3cb01d38c82a, type: 3}
       insertIndex: -1
+      addedObject: {fileID: 4167098534301619552}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 200366a911d4e4d4e8ef3cb01d38c82a, type: 3}
+      insertIndex: -1
       addedObject: {fileID: -8005869248301485149}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 200366a911d4e4d4e8ef3cb01d38c82a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3667614858384405842}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 200366a911d4e4d4e8ef3cb01d38c82a, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 4479657038814786648}
+      addedObject: {fileID: 285781573843634807}
   m_SourcePrefab: {fileID: 100100000, guid: 200366a911d4e4d4e8ef3cb01d38c82a, type: 3}
 --- !u!1 &4244429042826304332 stripped
 GameObject:
@@ -99,18 +102,52 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GlobalObjectIdHash: 1664542227
-  InScenePlacedSourceGlobalObjectIdHash: 1664542227
+  InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
   ActiveSceneSynchronization: 0
-  SceneMigrationSynchronization: 0
+  SceneMigrationSynchronization: 1
   SpawnWithObservers: 1
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
   SyncOwnerTransformWhenParented: 1
   AllowOwnerToParent: 0
+--- !u!114 &4479657038814786648
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4244429042826304332}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c72b9b3869c5b0a4ebc58f261bcc2575, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
+  networkPosition:
+    m_InternalValue: {x: 0, y: 0, z: 0}
+  networkRotation:
+    m_InternalValue: {x: 0, y: 0, z: 0, w: 1}
+  networkPositionVelocity: {x: 0, y: 0, z: 0}
+  networkPositionSmoothTime: 0.1
+  networkRotationSmoothTime: 0.1
+  networkAnimatorHorizontal:
+    m_InternalValue: 0
+  networkAnimatorVertical:
+    m_InternalValue: 0
+  networkAnimatorMoveAmout:
+    m_InternalValue: 0
+  isSprinting:
+    m_InternalValue: 0
+  endurance:
+    m_InternalValue: 1
+  currentStamina:
+    m_InternalValue: 0
+  maxStamina:
+    m_InternalValue: 0
 --- !u!114 &1508942988764959476
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -134,31 +171,7 @@ MonoBehaviour:
   playerAnimatorManager: {fileID: 0}
   playerLocomotionManager: {fileID: 0}
   playerNetworkManager: {fileID: 0}
---- !u!143 &285781573843634807
-CharacterController:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4244429042826304332}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Height: 1.95
-  m_Radius: 0.5
-  m_SlopeLimit: 45
-  m_StepOffset: 0.3
-  m_SkinWidth: 0.08
-  m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 0.97, z: 0}
+  playerStatsManager: {fileID: 0}
 --- !u!114 &-1157735502656686036
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -188,9 +201,22 @@ MonoBehaviour:
   horizontalMovement: 0
   moveAmount: 0
   walkSpeed: 2
-  runSpeed: 3.5
+  runSpeed: 5
   sprintSpeed: 7
   speedRotation: 15
+  sprintingStaminaCost: 2
+--- !u!114 &4167098534301619552
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4244429042826304332}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c91344aa79c3ec042a222d50b9968a73, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!95 &-8005869248301485149
 Animator:
   serializedVersion: 7
@@ -310,31 +336,28 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &4479657038814786648
-MonoBehaviour:
+--- !u!143 &285781573843634807
+CharacterController:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4244429042826304332}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ProvidesContacts: 0
   m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c72b9b3869c5b0a4ebc58f261bcc2575, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ShowTopMostFoldoutHeaderGroup: 1
-  networkPosition:
-    m_InternalValue: {x: 0, y: 0, z: 0}
-  networkRotation:
-    m_InternalValue: {x: 0, y: 0, z: 0, w: 1}
-  networkPositionVelocity: {x: 0, y: 0, z: 0}
-  networkPositionSmoothTime: 0.1
-  networkRotationSmoothTime: 0.1
-  networkAnimatorHorizontal:
-    m_InternalValue: 0
-  networkAnimatorVertical:
-    m_InternalValue: 0
-  networkAnimatorMoveAmout:
-    m_InternalValue: 0
-  isSprinting:
-    m_InternalValue: 0
+  serializedVersion: 3
+  m_Height: 1.95
+  m_Radius: 0.5
+  m_SlopeLimit: 45
+  m_StepOffset: 0.3
+  m_SkinWidth: 0.08
+  m_MinMoveDistance: 0.001
+  m_Center: {x: 0, y: 0.97, z: 0}

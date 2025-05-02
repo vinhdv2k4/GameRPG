@@ -5,6 +5,7 @@ namespace TV {
        [HideInInspector]public PlayerAnimatorManager playerAnimatorManager;
         [HideInInspector] public PlayerLocomotionManager playerLocomotionManager;
         [HideInInspector] public PlayerNetworkManager playerNetworkManager;
+        [HideInInspector] public PlayerStatsManager playerStatsManager;
         protected override void Awake()
         {
             
@@ -12,6 +13,7 @@ namespace TV {
             playerLocomotionManager = GetComponent<PlayerLocomotionManager>();
             playerAnimatorManager = GetComponent<PlayerAnimatorManager>();
             playerNetworkManager = GetComponent<PlayerNetworkManager>();
+            playerStatsManager = GetComponent<PlayerStatsManager>();
         }
         protected override void Update()
         {
@@ -21,6 +23,7 @@ namespace TV {
             if (!IsOwner)
                 return;
             playerLocomotionManager.HandleAllMovement();
+            playerStatsManager.RegenarateStamina();
 
         }
 
@@ -40,6 +43,15 @@ namespace TV {
             {
                 PlayerCamera.instance.player = this;
                 PlayerInputManager.instance.player = this;
+
+                playerNetworkManager.currentStamina.OnValueChanged += PlayerUIManger.instance.playerUIHudManager.SetNewStaminaValue;
+                playerNetworkManager.currentStamina.OnValueChanged += playerStatsManager.ResetStaminaRegenTimer;
+
+                playerNetworkManager.maxStamina.Value = playerStatsManager.CaculateStaminaBasedOnEnduranceLevel(playerNetworkManager.endurance.Value);
+                playerNetworkManager.currentStamina.Value = playerStatsManager.CaculateStaminaBasedOnEnduranceLevel(playerNetworkManager.endurance.Value);
+                PlayerUIManger.instance.playerUIHudManager.SetMaxStaminaValue(playerNetworkManager.maxStamina.Value);
+                
+
             }
         }
 

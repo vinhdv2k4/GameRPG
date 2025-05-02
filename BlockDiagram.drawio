@@ -1,0 +1,149 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/26.1.1 Chrome/132.0.6834.210 Electron/34.3.3 Safari/537.36" version="26.1.1">
+  <diagram name="Page-1" id="rDu8OGM9o1XXTFtEHrG9">
+    <mxGraphModel dx="1050" dy="621" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="hVCCeVSMu-y_rFPwFwII-13" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="hVCCeVSMu-y_rFPwFwII-1" target="hVCCeVSMu-y_rFPwFwII-4" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="500" y="220" />
+              <mxPoint x="240" y="220" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="hVCCeVSMu-y_rFPwFwII-14" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="hVCCeVSMu-y_rFPwFwII-1" target="hVCCeVSMu-y_rFPwFwII-6" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="500" y="220" />
+              <mxPoint x="680" y="220" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="hVCCeVSMu-y_rFPwFwII-16" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="hVCCeVSMu-y_rFPwFwII-1" target="hVCCeVSMu-y_rFPwFwII-11" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="500" y="220" />
+              <mxPoint x="1030" y="220" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="hVCCeVSMu-y_rFPwFwII-17" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="hVCCeVSMu-y_rFPwFwII-1" target="hVCCeVSMu-y_rFPwFwII-5" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="500" y="250" />
+              <mxPoint x="500" y="250" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="hVCCeVSMu-y_rFPwFwII-58" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="hVCCeVSMu-y_rFPwFwII-1" target="hVCCeVSMu-y_rFPwFwII-10" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="500" y="220" />
+              <mxPoint x="850" y="220" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="hVCCeVSMu-y_rFPwFwII-1" value="GameRPG" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="440" y="100" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="hVCCeVSMu-y_rFPwFwII-4" value="Player Prefab" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="170" y="280" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="hVCCeVSMu-y_rFPwFwII-19" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="hVCCeVSMu-y_rFPwFwII-5" target="hVCCeVSMu-y_rFPwFwII-18" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="hVCCeVSMu-y_rFPwFwII-5" value="PlayerInputManager" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="440" y="280" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="hVCCeVSMu-y_rFPwFwII-35" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="hVCCeVSMu-y_rFPwFwII-6" target="hVCCeVSMu-y_rFPwFwII-34" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="hVCCeVSMu-y_rFPwFwII-6" value="NetWorkManager" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="620" y="280" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="hVCCeVSMu-y_rFPwFwII-10" value="WorldManager" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="790" y="280" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="hVCCeVSMu-y_rFPwFwII-60" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="hVCCeVSMu-y_rFPwFwII-11" target="hVCCeVSMu-y_rFPwFwII-59" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="hVCCeVSMu-y_rFPwFwII-11" value="Camera" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="970" y="280" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="hVCCeVSMu-y_rFPwFwII-18" value="PlayerInputManager.cs" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="447.5" y="390" width="105" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="hVCCeVSMu-y_rFPwFwII-23" value="PlayerManager.cs" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="198.75" y="370" width="162.5" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="hVCCeVSMu-y_rFPwFwII-24" value="PlayerAnimationManager.cs" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="196.25" y="480" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="hVCCeVSMu-y_rFPwFwII-25" value="PlayerLocomotionManager.cs" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="200" y="590" width="170" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="hVCCeVSMu-y_rFPwFwII-26" value="PlayerStatsManager.cs" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="200" y="660" width="152.5" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="hVCCeVSMu-y_rFPwFwII-33" value="PlayerNetWorkManager.cs" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="615" y="500" width="130" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="hVCCeVSMu-y_rFPwFwII-34" value="CharacterNetWorkManager.cs" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="607.5" y="390" width="145" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="hVCCeVSMu-y_rFPwFwII-45" value="" style="edgeStyle=none;orthogonalLoop=1;jettySize=auto;html=1;rounded=0;startArrow=none;startFill=0;endArrow=block;endFill=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" parent="1" source="hVCCeVSMu-y_rFPwFwII-33" target="hVCCeVSMu-y_rFPwFwII-34" edge="1">
+          <mxGeometry width="80" relative="1" as="geometry">
+            <mxPoint x="700" y="490" as="sourcePoint" />
+            <mxPoint x="780" y="490" as="targetPoint" />
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="hVCCeVSMu-y_rFPwFwII-48" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="hVCCeVSMu-y_rFPwFwII-46" target="hVCCeVSMu-y_rFPwFwII-25" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="120" y="615" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="hVCCeVSMu-y_rFPwFwII-50" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=1;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="hVCCeVSMu-y_rFPwFwII-46" target="hVCCeVSMu-y_rFPwFwII-26" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="170" y="690" />
+              <mxPoint x="170" y="690" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="hVCCeVSMu-y_rFPwFwII-51" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="hVCCeVSMu-y_rFPwFwII-46" target="hVCCeVSMu-y_rFPwFwII-4" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="hVCCeVSMu-y_rFPwFwII-46" value="" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.annotation_1;align=left;pointerEvents=1;" parent="1" vertex="1">
+          <mxGeometry x="120" y="310" width="40" height="380" as="geometry" />
+        </mxCell>
+        <mxCell id="hVCCeVSMu-y_rFPwFwII-56" value="" style="edgeStyle=none;orthogonalLoop=1;jettySize=auto;html=1;rounded=0;" parent="1" edge="1">
+          <mxGeometry width="80" relative="1" as="geometry">
+            <mxPoint x="116.25" y="509.5" as="sourcePoint" />
+            <mxPoint x="196.25" y="509.5" as="targetPoint" />
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="hVCCeVSMu-y_rFPwFwII-57" value="" style="edgeStyle=none;orthogonalLoop=1;jettySize=auto;html=1;rounded=0;" parent="1" edge="1">
+          <mxGeometry width="80" relative="1" as="geometry">
+            <mxPoint x="120" y="394.5" as="sourcePoint" />
+            <mxPoint x="200" y="394.5" as="targetPoint" />
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="hVCCeVSMu-y_rFPwFwII-59" value="PlayerCameraManager.cs" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="970" y="380" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="hVCCeVSMu-y_rFPwFwII-65" value="WoldSaveGame.cs" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="800" y="390" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="hVCCeVSMu-y_rFPwFwII-69" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.417;entryY=-0.05;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" source="hVCCeVSMu-y_rFPwFwII-10" target="hVCCeVSMu-y_rFPwFwII-65" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

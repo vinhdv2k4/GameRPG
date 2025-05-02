@@ -14,7 +14,7 @@ namespace TV
             vertical = Animator.StringToHash("Vertical");
             horizontal = Animator.StringToHash("Horizontal");
         }
-        public void UpadateAnimatorMovementParameters(float horizontalMovement, float verticalMovement, bool isSprinting)
+        public void UpdateAnimatorMovementParameters(float horizontalMovement, float verticalMovement, bool isSprinting)
         {
             float horizontalAmount = horizontalMovement;
             float verticalAmount = verticalMovement;

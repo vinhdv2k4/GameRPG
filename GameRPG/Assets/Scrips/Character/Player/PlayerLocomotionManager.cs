@@ -16,9 +16,11 @@ namespace TV
         [SerializeField] float runSpeed = 5f;
         [SerializeField] float sprintSpeed = 7f;
         [SerializeField] float speedRotation = 15f;
+        [SerializeField] int sprintingStaminaCost = 2;
 
         [Header("Dodge Setting")]
         private Vector3 rollDirection;
+        private float dodgeCost = 25f;
 
         protected override void Awake()
         {
@@ -42,7 +44,7 @@ namespace TV
                 horizontalMovement = player.characterNetworkManager.networkAnimatorHorizontal.Value;
                 moveAmount = player.characterNetworkManager.networkAnimatorMoveAmout.Value;
 
-                player.playerAnimatorManager.UpadateAnimatorMovementParameters(0, moveAmount, player.playerNetworkManager.isSprinting.Value);
+                player.playerAnimatorManager.UpdateAnimatorMovementParameters(0, moveAmount, player.playerNetworkManager.isSprinting.Value);
             }
 
         }
@@ -109,6 +111,11 @@ namespace TV
             {
                 player.playerNetworkManager.isSprinting.Value = false;
             }
+            if (player.playerNetworkManager.currentStamina.Value <= 0)
+            {
+                player.playerNetworkManager.isSprinting.Value = false;
+                return;
+            }
             if (moveAmount >= 0.5)
             {
                 player.playerNetworkManager.isSprinting.Value = true;
@@ -117,11 +124,19 @@ namespace TV
             {
                 player.playerNetworkManager.isSprinting.Value = false;
             }
+            if (player.playerNetworkManager.isSprinting.Value)
+            {
+                player.playerNetworkManager.currentStamina.Value -= sprintingStaminaCost * Time.deltaTime;
+            }
         }
+
+           
 
         public void AttemptToPerformmDodge()
         {
             if (player.isPerformingAction)
+                return;
+            if (player.playerNetworkManager.currentStamina.Value <= 0)
                 return;
             // if moving 
             if (PlayerInputManager.instance.moveAmount > 0)
@@ -144,6 +159,7 @@ namespace TV
                 // perform a backstep animation
                 player.playerAnimatorManager.PlayerTargetActionAnimation("Back_Step_01", true, true);
             }
+            player.playerNetworkManager.currentStamina.Value -= dodgeCost;
         }
     }
 }

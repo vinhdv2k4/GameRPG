@@ -13,8 +13,8 @@ namespace TV
         {
             if (player.applyRootMotion)
             {
-                 Vector3 volocity = player.animator.deltaPosition;
-                player.characterController.Move(volocity);
+                 Vector3 velocity = player.animator.deltaPosition;
+                player.characterController.Move(velocity);
                 player.transform.rotation *= player.animator.deltaRotation;   
             }
         }
