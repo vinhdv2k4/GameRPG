@@ -12,7 +12,8 @@ namespace TV
 
         public void StartNewGame()
         {
-            StartCoroutine(WorldGameSave.instance.loadNewGame());
+            WorldGameSave.instance.CreateNewGame();
+            StartCoroutine(WorldGameSave.instance.loadWorldScence());
 
         }
     }
