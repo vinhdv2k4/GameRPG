@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using Unity.Services.Lobbies.Models;
 using UnityEngine;
@@ -7,7 +8,7 @@ namespace TV
     public class WorldGameSave : MonoBehaviour
     {
         public static WorldGameSave instance;
-        [SerializeField] PlayerManager player;
+        public PlayerManager player;
         [Header("Save/Load")]
         [SerializeField] bool saveGame;
         [SerializeField] bool loadGame;
@@ -24,9 +25,9 @@ namespace TV
 
         [Header("Charater Slots")]
         public CharacterSaveData characterSlot1;
-        //public CharacterSaveData characterSlot2;
-        //public CharacterSaveData characterSlot3;
-        //public CharacterSaveData characterSlot4;
+        public CharacterSaveData characterSlot2;
+        public CharacterSaveData characterSlot3;
+        public CharacterSaveData characterSlot4;
         private void Awake()
         {
             if (instance == null)
@@ -41,6 +42,7 @@ namespace TV
         void Start()
         {
             DontDestroyOnLoad(gameObject);
+            LoadAllCharacterProfiles();
         }
         private void Update()
         {
@@ -80,9 +82,28 @@ namespace TV
 
         public void CreateNewGame()
         {
-            saveFileName= DecideCharacterFileOnBasedOnCharacterSlotBeingUsed(currentCharacterSlotSavedUsed);
-            currentCharacterData = new CharacterSaveData();
+            saveFileDataWirte = new SaveFileDataWirte();
+            saveFileDataWirte.saveDataDirectionPath = Application.persistentDataPath;
+            // check to see if create a new save fiile (check other exits file)
+            saveFileDataWirte = new SaveFileDataWirte();
+            saveFileDataWirte.saveDataDirectionPath = Application.persistentDataPath;
+
+            foreach (CharacterSlot slot in Enum.GetValues(typeof(CharacterSlot)))
+            {
+                saveFileDataWirte.saveFileName = DecideCharacterFileOnBasedOnCharacterSlotBeingUsed(slot);
+
+                if (!saveFileDataWirte.CheckToSeeFileExits())
+                {
+                    currentCharacterSlotSavedUsed = slot;
+                    currentCharacterData = new CharacterSaveData();
+                    StartCoroutine(loadWorldScence());
+                    return;
+                }
+            }
+
+            TitleScreen.instance.DisplayeNoFreeCharacterSlotPopUp();
         }
+
 
         public void LoadGame()
         {
@@ -90,7 +111,7 @@ namespace TV
            
             saveFileDataWirte = new SaveFileDataWirte();
             saveFileDataWirte.saveDataDirectionPath =Application.persistentDataPath;
-            saveFileDataWirte.saveDataFileName = saveFileName;
+            saveFileDataWirte.saveFileName = saveFileName;
             currentCharacterData = saveFileDataWirte.LoadSaveFile();
 
             StartCoroutine(loadWorldScence());
@@ -101,17 +122,36 @@ namespace TV
             saveFileName = DecideCharacterFileOnBasedOnCharacterSlotBeingUsed(currentCharacterSlotSavedUsed);
             saveFileDataWirte = new SaveFileDataWirte();
             saveFileDataWirte.saveDataDirectionPath = Application.persistentDataPath;
-            saveFileDataWirte.saveDataFileName = saveFileName;
+            saveFileDataWirte.saveFileName = saveFileName;
 
             player.SaveGameCurrentCharacterData(ref currentCharacterData);
 
             saveFileDataWirte.CreateNewCharacterSaveFile(currentCharacterData);
 
         }
+        private void LoadAllCharacterProfiles()
+        {
+
+            saveFileDataWirte = new SaveFileDataWirte();
+            saveFileDataWirte.saveDataDirectionPath = Application.persistentDataPath;
+            saveFileDataWirte.saveFileName = DecideCharacterFileOnBasedOnCharacterSlotBeingUsed(CharacterSlot.CharacterSlot01);
+            characterSlot1 = saveFileDataWirte.LoadSaveFile();
+
+            saveFileDataWirte.saveFileName = DecideCharacterFileOnBasedOnCharacterSlotBeingUsed(CharacterSlot.CharacterSlot02);
+            characterSlot2 = saveFileDataWirte.LoadSaveFile();
+
+            saveFileDataWirte.saveFileName = DecideCharacterFileOnBasedOnCharacterSlotBeingUsed(CharacterSlot.CharacterSlot03);
+            characterSlot3 = saveFileDataWirte.LoadSaveFile();
+
+            saveFileDataWirte.saveFileName = DecideCharacterFileOnBasedOnCharacterSlotBeingUsed(CharacterSlot.CharacterSlot04);
+            characterSlot4 = saveFileDataWirte.LoadSaveFile();
+
+        }
         public IEnumerator loadWorldScence()
         {
 
             AsyncOperation loadOperation = SceneManager.LoadSceneAsync(worldSceneIndex);
+            player.LoadGameDataFromCurrentCharacterData(ref currentCharacterData);
             yield return null;
         }
 

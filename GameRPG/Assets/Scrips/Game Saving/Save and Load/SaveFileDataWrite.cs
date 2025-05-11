@@ -5,14 +5,14 @@ using System.Runtime.CompilerServices;
 using UnityEngine;
 namespace TV
 {
-    public class SaveFileDataWirte : MonoBehaviour
+    public class SaveFileDataWirte 
     {
         public string saveDataDirectionPath = "";
-        public string saveDataFileName = "";
+        public string saveFileName = "";
         // must check to see if one of this character slot already exist(4 players)
         public bool CheckToSeeFileExits()
         {
-            if (File.Exists(Path.Combine(saveDataDirectionPath, saveDataFileName)))
+            if (File.Exists(Path.Combine(saveDataDirectionPath, saveFileName)))
             {
                 return true;
             }
@@ -24,12 +24,12 @@ namespace TV
         }
         public void DeleteSaveFile()
         {
-            File.Delete(Path.Combine(saveDataDirectionPath, saveDataFileName));
+            File.Delete(Path.Combine(saveDataDirectionPath, saveFileName));
         }
        // using when starting new game
         public void CreateNewCharacterSaveFile(CharacterSaveData characterSaveData)
         {
-            string savePath = Path.Combine(saveDataDirectionPath, saveDataFileName);
+            string savePath = Path.Combine(saveDataDirectionPath, saveFileName);
             try
             {
                 //Create a Directory if it does not exist
@@ -59,7 +59,7 @@ namespace TV
         {
             // return null if heave error
             CharacterSaveData characterSaveData = null;
-            string loadPath = Path.Combine(saveDataDirectionPath, saveDataFileName);
+            string loadPath = Path.Combine(saveDataDirectionPath, saveFileName);
             if (File.Exists(loadPath)) { 
                 try
                 {

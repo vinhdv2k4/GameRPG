@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using TMPro;
 using UnityEngine;
 namespace TV
@@ -20,25 +21,98 @@ namespace TV
 
         private void LoadSaveSlots()
         {
-            saveFileDataWirte = new SaveFileDataWirte();
-            saveFileDataWirte.saveDataDirectionPath = Application.persistentDataPath;
-            if (characterSlot == CharacterSlot.CharacterSlot01)
+            switch (characterSlot)
             {
-                saveFileDataWirte.saveDataFileName = WorldGameSave.instance.DecideCharacterFileOnBasedOnCharacterSlotBeingUsed(characterSlot);
-            }
+                case CharacterSlot.CharacterSlot01:
+                    {
 
-            // if file exits, get information from the file
-            if (saveFileDataWirte.CheckToSeeFileExits())
-            {
-                characterName.text = WorldGameSave.instance.characterSlot1.characterName;
+                        saveFileDataWirte = new SaveFileDataWirte();
+                        saveFileDataWirte.saveDataDirectionPath = Application.persistentDataPath;
+
+                        if (characterSlot == CharacterSlot.CharacterSlot01)
+
+                            saveFileDataWirte.saveFileName = WorldGameSave.instance.DecideCharacterFileOnBasedOnCharacterSlotBeingUsed(characterSlot);
+
+
+                        // if file exits, get information from the file
+                        if (saveFileDataWirte.CheckToSeeFileExits())
+                        {
+                            characterName.text = WorldGameSave.instance.characterSlot1.characterName;
+                        }
+                        else
+                        {
+                            gameObject.SetActive(false);
+                        }
+                    }
+                    break;
+                case CharacterSlot.CharacterSlot02:
+                    saveFileDataWirte = new SaveFileDataWirte();
+                    saveFileDataWirte.saveDataDirectionPath = Application.persistentDataPath;
+
+                    if (characterSlot == CharacterSlot.CharacterSlot02)
+
+                        saveFileDataWirte.saveFileName = WorldGameSave.instance.DecideCharacterFileOnBasedOnCharacterSlotBeingUsed(characterSlot);
+
+
+                    // if file exits, get information from the file
+                    if (saveFileDataWirte.CheckToSeeFileExits())
+                    {
+                        characterName.text = WorldGameSave.instance.characterSlot2.characterName;
+                    }
+                    else
+                    {
+                        gameObject.SetActive(false);
+                    }
+                    break;
+                case CharacterSlot.CharacterSlot03:
+                    saveFileDataWirte = new SaveFileDataWirte();
+                    saveFileDataWirte.saveDataDirectionPath = Application.persistentDataPath;
+
+                    if (characterSlot == CharacterSlot.CharacterSlot03)
+
+                        saveFileDataWirte.saveFileName = WorldGameSave.instance.DecideCharacterFileOnBasedOnCharacterSlotBeingUsed(characterSlot);
+
+
+                    // if file exits, get information from the file
+                    if (saveFileDataWirte.CheckToSeeFileExits())
+                    {
+                        characterName.text = WorldGameSave.instance.characterSlot3.characterName;
+                    }
+                    else
+                    {
+                        gameObject.SetActive(false);
+                    }
+                    break;
+                case CharacterSlot.CharacterSlot04:
+                    saveFileDataWirte = new SaveFileDataWirte();
+                    saveFileDataWirte.saveDataDirectionPath = Application.persistentDataPath;
+
+                    if (characterSlot == CharacterSlot.CharacterSlot04)
+
+                        saveFileDataWirte.saveFileName = WorldGameSave.instance.DecideCharacterFileOnBasedOnCharacterSlotBeingUsed(characterSlot);
+
+
+                    // if file exits, get information from the file
+                    if (saveFileDataWirte.CheckToSeeFileExits())
+                    {
+                        characterName.text = WorldGameSave.instance.characterSlot4.characterName;
+                    }
+                    else
+                    {
+                        gameObject.SetActive(false);
+                    }
+                    break;
+
             }
-            else
-            {
-                gameObject.SetActive(false);
-            }
+        }
+        public void LoadGameFromCharacter()
+        {
+            WorldGameSave.instance.currentCharacterSlotSavedUsed = characterSlot;
+            WorldGameSave.instance.LoadGame();
+        }
 
 
         }
     }
-}
+
 
