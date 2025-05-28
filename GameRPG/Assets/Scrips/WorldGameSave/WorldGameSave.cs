@@ -96,7 +96,7 @@ namespace TV
                 {
                     currentCharacterSlotSavedUsed = slot;
                     currentCharacterData = new CharacterSaveData();
-                    StartCoroutine(loadWorldScence());
+                    NewGame();
                     return;
                 }
             }
@@ -104,6 +104,13 @@ namespace TV
             TitleScreen.instance.DisplayeNoFreeCharacterSlotPopUp();
         }
 
+        private void NewGame(){
+            player.playerNetworkManager.vitality.Value = 15;
+            player.playerNetworkManager.endurance.Value = 10;   
+
+            SaveGame();
+            StartCoroutine(loadWorldScence());
+        }
 
         public void LoadGame()
         {
@@ -129,6 +136,15 @@ namespace TV
             saveFileDataWirte.CreateNewCharacterSaveFile(currentCharacterData);
 
         }
+
+        public void DeleteGame(CharacterSlot characterSlot)
+        {
+          
+            saveFileDataWirte = new SaveFileDataWirte();
+            saveFileDataWirte.saveDataDirectionPath = Application.persistentDataPath;
+            saveFileDataWirte.saveFileName = DecideCharacterFileOnBasedOnCharacterSlotBeingUsed(characterSlot);
+            saveFileDataWirte.DeleteSaveFile();
+        }
         private void LoadAllCharacterProfiles()
         {
 
@@ -149,8 +165,8 @@ namespace TV
         }
         public IEnumerator loadWorldScence()
         {
-
             AsyncOperation loadOperation = SceneManager.LoadSceneAsync(worldSceneIndex);
+            //AsyncOperation loadOperation = SceneManager.LoadSceneAsync(currentCharacterData.sceneIndex);
             player.LoadGameDataFromCurrentCharacterData(ref currentCharacterData);
             yield return null;
         }

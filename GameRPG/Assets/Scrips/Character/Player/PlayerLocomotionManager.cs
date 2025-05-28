@@ -15,12 +15,20 @@ namespace TV
         [SerializeField] float walkSpeed = 2f;
         [SerializeField] float runSpeed = 5f;
         [SerializeField] float sprintSpeed = 7f;
-        [SerializeField] float speedRotation = 15f;
-        [SerializeField] int sprintingStaminaCost = 2;
+        [SerializeField] float speedRotation = 15f;      
+     
 
+        [Header("Jump Setting")]
+        [SerializeField] int sprintingStaminaCost = 20;
+        [SerializeField] float jumHeight = 4f;
+        [SerializeField] float jumpForwardSpeed = 5f;
+        [SerializeField] float freeFallSpeed = 2f;
+        private Vector3 jumpDirection;
         [Header("Dodge Setting")]
-        private Vector3 rollDirection;
-        private float dodgeCost = 25f;
+        [SerializeField] Vector3 rollDirection;
+        [SerializeField] float dodgeCost = 25f;
+        [SerializeField] float jumpCost = 10f;
+
 
         protected override void Awake()
         {
@@ -53,6 +61,8 @@ namespace TV
          
             HandleGroundedMovement();
             HandleRotation();
+            HandleJumpingMovement();
+            HandleFreeFallMovement();
         }
         private void GetMovementValues()
         {
@@ -130,9 +140,29 @@ namespace TV
             }
         }
 
-           
+        private void HandleJumpingMovement()
+        {
+            if (player.isJumping)
+            {
+                player.characterController.Move(jumpDirection *jumpForwardSpeed* Time.deltaTime);
 
-        public void AttemptToPerformmDodge()
+            }
+        }
+
+        private void HandleFreeFallMovement()
+        {
+            if (!player.isGrounded)
+            {
+                Vector3 freeAllDirection;
+                freeAllDirection = PlayerCamera.instance.cameraObject.transform.forward * PlayerInputManager.instance.verticalInput;
+                freeAllDirection += PlayerCamera.instance.cameraObject.transform.right * PlayerInputManager.instance.horizontalInput;
+                freeAllDirection.y = 0; 
+
+                player.characterController.Move(freeAllDirection * freeFallSpeed* Time.deltaTime);
+            }
+        }
+
+        public void AttemptToPerformDodge()
         {
             if (player.isPerformingAction)
                 return;
@@ -160,6 +190,48 @@ namespace TV
                 player.playerAnimatorManager.PlayerTargetActionAnimation("Back_Step_01", true, true);
             }
             player.playerNetworkManager.currentStamina.Value -= dodgeCost;
+        }
+        public void AttemptToPerformJump()
+        {
+            if (player.isPerformingAction)
+                return;
+            if (player.playerNetworkManager.currentStamina.Value <= 0)
+                return;
+            if (player.isJumping)
+                return;
+            if (!player.isGrounded)
+                return;
+
+            player.playerAnimatorManager.PlayerTargetActionAnimation("Main_Jump", false);
+            player.isJumping = true;
+
+            player.playerNetworkManager.currentStamina.Value -= jumpCost * Time.deltaTime;
+
+            jumpDirection = PlayerCamera.instance.cameraObject.transform.forward * PlayerInputManager.instance.verticalInput;
+            jumpDirection += PlayerCamera.instance.cameraObject.transform.right * PlayerInputManager.instance.horizontalInput;
+            jumpDirection.y = 0;
+
+            if (jumpDirection!= Vector3.zero)
+            {
+                if (player.playerNetworkManager.isSprinting.Value)
+                {
+                    jumpDirection *= 1;
+                }
+                else if (PlayerInputManager.instance.moveAmount > 0.5)
+                {
+                    jumpDirection *= 0.5f;
+                }
+                else if (PlayerInputManager.instance.moveAmount <= 0.5)
+                {
+                    jumpDirection *= 0.25f;
+                }
+            }
+            
+        }
+
+        public void ApplyJumpingVelocity()
+        {
+            yVelocity.y = Mathf.Sqrt(jumHeight * -2 * gravity);
         }
     }
 }

@@ -11,9 +11,20 @@ namespace TV
         private float staminaTickTimer = 0f;
         [SerializeField] float staminaRegenarationDelay = 2f;
 
-        protected void Awake()
+        protected virtual void Awake()
         {
             character = GetComponent<CharacterManager>();
+        }
+        protected virtual void Start()
+        {
+            
+        }
+        public int CaculateHealthBasedOnVitalityLevel(int vitality )
+        {
+            float health = 0;
+
+            health = vitality * 10;
+            return Mathf.RoundToInt(health);
         }
         public int CaculateStaminaBasedOnEnduranceLevel(int ebdurance)
         {

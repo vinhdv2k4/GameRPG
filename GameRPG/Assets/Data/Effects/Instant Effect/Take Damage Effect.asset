@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ea4ccd56432fae498c80365fab998c2, type: 3}
+  m_Name: Take Damage Effect
+  m_EditorClassIdentifier: 
+  EffectID: 0
+  characterCasingDamage: {fileID: 0}
+  physicDamage: 0
+  magicDamage: 0
+  fireDamage: 0
+  lightningDamage: 0
+  holyDamage: 0
+  poisonDamage: 0
+  poiseDamage: 0
+  poiseIsBroken: 0
+  playerDamageAnimation: 1
+  manuallySelectDamageAnimation: 0
+  damageAnimationName: 
+  finalPhysicDamage: 0
+  willPlayDamageSFX: 1
+  elementalDamageSoundFX: {fileID: 0}
+  angleHitfROM: 0
+  contactPoint: {x: 0, y: 0, z: 0}

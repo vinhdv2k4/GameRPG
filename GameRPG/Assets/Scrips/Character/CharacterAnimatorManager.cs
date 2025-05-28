@@ -16,6 +16,8 @@ namespace TV
         }
         public void UpdateAnimatorMovementParameters(float horizontalMovement, float verticalMovement, bool isSprinting)
         {
+            // du lieu thay doi ma ko thay doi du lieu goc
+
             float horizontalAmount = horizontalMovement;
             float verticalAmount = verticalMovement;
             if (isSprinting)

@@ -24,6 +24,7 @@ namespace TV
         [Header("Player Actions Input")]
         [SerializeField ] bool  dodgeInput =false;
         [SerializeField] bool sprintInput = false;
+        [SerializeField] bool jumpInput = false;
         private void Awake()
         {
             if (instance == null)
@@ -70,6 +71,7 @@ namespace TV
                 playerControll.PlayerCamera.Movement.canceled += i => cameraInput = Vector2.zero;
 
                 playerControll.PlayerActions.Dodge.performed += i => dodgeInput = true;
+                playerControll.PlayerActions.Jump.performed += i => jumpInput = true;
 
                 // hold input , set bool =true and release set bool = false
                 playerControll.PlayerActions.Sprint.performed += i => sprintInput = true;
@@ -110,6 +112,7 @@ namespace TV
             HandlePlayerMovement();
             HandleDodgeInput();
             HandleSprintInput();
+            HandleJumpInput();
         } 
         private void HandlePlayerMovement()
         {
@@ -143,7 +146,7 @@ namespace TV
             if (dodgeInput)
             {
                 dodgeInput = false;
-                player.playerLocomotionManager.AttemptToPerformmDodge();
+                player.playerLocomotionManager.AttemptToPerformDodge();
                  
             }
         }
@@ -158,5 +161,16 @@ namespace TV
                player.playerNetworkManager.isSprinting.Value = false;
             }
         }
+
+        private void HandleJumpInput()
+        {
+            if (jumpInput)
+            {
+                jumpInput = false;
+                player.playerLocomotionManager.AttemptToPerformJump();
+            }
+        }
+
+       
     }
 }

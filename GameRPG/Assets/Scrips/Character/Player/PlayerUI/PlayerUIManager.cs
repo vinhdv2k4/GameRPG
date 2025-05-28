@@ -11,7 +11,7 @@ namespace TV
         [SerializeField] bool startGameAsClient;
 
         [HideInInspector] public PlayerUIHudManager playerUIHudManager;
-       
+        [HideInInspector] public PlayerUiPopUpManager playerUiPopUpManager;
 
         private void Awake()
         {
@@ -24,6 +24,7 @@ namespace TV
                 Destroy(gameObject);
             }
             playerUIHudManager = GetComponentInChildren<PlayerUIHudManager>();
+            playerUiPopUpManager = GetComponentInChildren<PlayerUiPopUpManager>();
         }
 
         private void Start()

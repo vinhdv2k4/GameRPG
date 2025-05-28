@@ -4,6 +4,8 @@ namespace TV
     [System.Serializable]
     public class CharacterSaveData 
     {
+        [Header("Scene Index")]
+        public int sceneIndex=1;
         [Header("Character Name")]
         public string characterName= "Character";
 
@@ -15,6 +17,13 @@ namespace TV
         public float yPosition;
         public float zPosition;
 
+        [Header("Resources")]
+        public int currentHealth;
+        public float curremtStamina;
+
+        [Header("Stats")]
+        public int vitality;
+        public int endurance;
 
     }
 }
