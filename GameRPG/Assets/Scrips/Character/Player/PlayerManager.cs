@@ -1,16 +1,21 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Unity.Netcode;
 namespace TV {
     public class PlayerManager : CharacterManager
     {
         [Header("DEBUG MENU")]
         [SerializeField] bool respawnCharacter = false;
-       [HideInInspector]public PlayerAnimatorManager playerAnimatorManager;
+        [SerializeField] bool switchRightWeapon = false;
+
+        [HideInInspector]public PlayerAnimatorManager playerAnimatorManager;
         [HideInInspector] public PlayerLocomotionManager playerLocomotionManager;
         [HideInInspector] public PlayerNetworkManager playerNetworkManager;
         [HideInInspector] public PlayerStatsManager playerStatsManager;
         [HideInInspector] public PlayerInventoryManager playerInventoryManager;
+        [HideInInspector] public PlayerEquitmentManager playerEquitmentManager;
+        [HideInInspector] public PlayerCombatManager playerCombatManager;
 
         protected override void Awake()
         {
@@ -21,6 +26,8 @@ namespace TV {
             playerNetworkManager = GetComponent<PlayerNetworkManager>();
             playerStatsManager = GetComponent<PlayerStatsManager>();
             playerInventoryManager = GetComponent<PlayerInventoryManager>();
+            playerEquitmentManager = GetComponent<PlayerEquitmentManager>();
+            playerCombatManager = GetComponent<PlayerCombatManager>();
         }
         protected override void Update()
         {
@@ -47,6 +54,7 @@ namespace TV {
         public override void OnNetworkSpawn()
         {
             base.OnNetworkSpawn();
+            NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnectedCallBack;
             if (IsOwner)
             {
                 PlayerCamera.instance.player = this;
@@ -63,6 +71,31 @@ namespace TV {
 
             }
             playerNetworkManager.currentHealth.OnValueChanged += playerNetworkManager.CheckHP;
+            playerNetworkManager.currentRightHandWeaponID.OnValueChanged += playerNetworkManager.OnCurrentRightHandWeaponIDChange;
+            playerNetworkManager.currentLeftHandWeaponID.OnValueChanged += playerNetworkManager.OnCurrentLeftHandWeaponIDChange;
+            playerNetworkManager.currentWeaponBeingUsed.OnValueChanged += playerNetworkManager.OnCurrentWeaponBeingUsedIDChange;
+
+
+            //upon Connecting, if player is owner, load the game data from current character data
+            if (IsOwner && !IsServer)
+            {
+                LoadGameDataFromCurrentCharacterData(ref WorldGameSave.instance.currentCharacterData);
+            }
+        }
+
+        private void OnClientConnectedCallBack(ulong clientID)
+        {
+            WorldSessionManager.instance.AddPlayerToActivePlayersList(this);
+            if (!IsServer && IsOwner)
+            {
+                foreach (var player in WorldSessionManager.instance.players)
+                {
+                    if (player != this)
+                    {
+                        player.LoadOtherPlayerCharacterWhenJoiningServer();
+                    }
+                }
+            }
         }
 
         public override IEnumerator ProcessDeathEvent(bool manuallySelectDeathAnimation = false)
@@ -119,12 +152,24 @@ namespace TV {
 
         }
 
+        public void LoadOtherPlayerCharacterWhenJoiningServer( )
+        {
+            playerNetworkManager.OnCurrentRightHandWeaponIDChange(0, playerNetworkManager.currentRightHandWeaponID.Value);
+            playerNetworkManager.OnCurrentLeftHandWeaponIDChange(0, playerNetworkManager.currentLeftHandWeaponID.Value);
+        }
+        
         private void DebugMenu()
         {
             if (respawnCharacter)
             {
                 respawnCharacter = false;
                 ReviveCharacter();
+            }
+
+            if (switchRightWeapon)
+            {
+                switchRightWeapon = false;
+                playerEquitmentManager.SwitchRightWeapon();
             }
         }
     }

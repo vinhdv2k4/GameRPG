@@ -4,6 +4,9 @@ namespace TV
     public class WorldSoundFXManager : MonoBehaviour
     {
         public static WorldSoundFXManager instance;
+        [Header("Damage Sounds")]
+        public AudioClip[] PhysicdamageSFX;
+
 
         [Header("Actions Sound")]
         public AudioClip rollSFX;
@@ -22,6 +25,12 @@ namespace TV
         private void Start()
         {
             DontDestroyOnLoad(gameObject);
+        }
+
+        public AudioClip ChoseRandomSFXFromArray(AudioClip[] array)
+        {
+            int index = Random.Range(0, array.Length);
+            return array[index];
         }
 
     }

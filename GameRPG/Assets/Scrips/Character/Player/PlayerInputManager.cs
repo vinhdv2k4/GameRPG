@@ -25,6 +25,7 @@ namespace TV
         [SerializeField ] bool  dodgeInput =false;
         [SerializeField] bool sprintInput = false;
         [SerializeField] bool jumpInput = false;
+        [SerializeField] bool RB_Input =false;
         private void Awake()
         {
             if (instance == null)
@@ -41,11 +42,15 @@ namespace TV
         private void Start()
         {
             DontDestroyOnLoad(gameObject);
+            SceneManager.activeSceneChanged += OnSceneChanged;
 
 
             instance.enabled = false;
-            SceneManager.activeSceneChanged += OnSceneChanged;
 
+            if(playerControll != null)
+            {
+                playerControll.Disable();
+            }
 
         }
         private void OnSceneChanged(Scene oldScene, Scene newScene)
@@ -54,10 +59,19 @@ namespace TV
             if (newScene.buildIndex == WorldGameSave.instance.GetWorldSceneIndex())
             {
                 instance.enabled = true;
+                if(playerControll != null)
+                {
+                    playerControll.Enable();
+                }
             }
             else
             {
                 instance.enabled = false;
+
+                if (playerControll != null)
+                {
+                    playerControll.Disable();
+                }
             }
         }
         private void OnEnable()
@@ -72,6 +86,7 @@ namespace TV
 
                 playerControll.PlayerActions.Dodge.performed += i => dodgeInput = true;
                 playerControll.PlayerActions.Jump.performed += i => jumpInput = true;
+                playerControll.PlayerActions.RB.performed += i => RB_Input = true;
 
                 // hold input , set bool =true and release set bool = false
                 playerControll.PlayerActions.Sprint.performed += i => sprintInput = true;
@@ -113,6 +128,8 @@ namespace TV
             HandleDodgeInput();
             HandleSprintInput();
             HandleJumpInput();
+            HandleRBInput();
+
         } 
         private void HandlePlayerMovement()
         {
@@ -171,6 +188,15 @@ namespace TV
             }
         }
 
-       
+       private void HandleRBInput()
+        {
+            if (RB_Input)
+            {
+                RB_Input = false;
+                player.playerNetworkManager.SetCharacterActionHand(true);
+
+                player.playerCombatManager.PerformWeaponBasedAction(player.playerInventoryManager.currentRightWeapon.oh_RB_Action, player.playerInventoryManager.currentRightWeapon);
+            }
+        }
     }
 }

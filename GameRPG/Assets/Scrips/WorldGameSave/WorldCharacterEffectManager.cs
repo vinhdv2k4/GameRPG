@@ -9,6 +9,10 @@ namespace TV
 
         [Header("Damage")]
         public TakeDamageEffect takeDamageEffect;
+
+        [Header("Blood VFX")]
+        public GameObject bloodSpatterPrefab;
+
         [SerializeField] List<CharacterEffect> instantEffects;
         private void Awake()
         {

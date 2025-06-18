@@ -2,6 +2,8 @@ using UnityEngine;
 using Unity.Netcode;
 using System.Security.Cryptography.X509Certificates;
 using System.Collections;
+using NUnit.Framework;
+using System.Collections.Generic;
 namespace TV
 {
     public class CharacterManager : NetworkBehaviour
@@ -14,17 +16,22 @@ namespace TV
         [HideInInspector] public CharacterNetworkManager characterNetworkManager;
         [HideInInspector] public CharacterEffectmanager characterEffectManager;
         [HideInInspector] public CharacterAnimatorManager characterAnimatorManager;
+        [HideInInspector] public CharacterCombatManager characterCombatManager;
+        [HideInInspector] public CharacterSoundFxManager characterSoundFxManager;
 
         [Header("Flags")]
         public bool isPerformingAction;
         public bool applyRootMotion = false;
         public bool canMove = true;
         public bool canRotate = true;
-        public bool isJumping = false;
         public bool isGrounded = true;
 
 
-
+        protected virtual void Start()
+        {
+            IgnoreMyownColliders();
+           
+        }
         protected virtual void Awake()
         {
 
@@ -34,6 +41,8 @@ namespace TV
             characterNetworkManager = GetComponent<CharacterNetworkManager>();
             characterEffectManager = GetComponent<CharacterEffectmanager>();
             characterAnimatorManager = GetComponent<CharacterAnimatorManager>();
+            characterCombatManager = GetComponent<CharacterCombatManager>();
+            characterSoundFxManager = GetComponent<CharacterSoundFxManager>();
         }
         protected virtual void Update()
         {
@@ -75,10 +84,31 @@ namespace TV
 
         public virtual void ReviveCharacter()
         {
-            if (IsOwner)
-            {
+        }
+ 
+        protected virtual void IgnoreMyownColliders()
+        {
+            Collider characterControllerCollider = GetComponent<Collider>();    
+            Collider[] damageableColliders =GetComponentsInChildren<Collider>();
+            List<Collider> ignoreColliders = new List<Collider>();
 
+            foreach (var collider in damageableColliders)
+            {
+                ignoreColliders.Add(collider);
+            }
+            ignoreColliders.Add(characterControllerCollider);
+
+            foreach(var collider in ignoreColliders)
+            {
+                foreach (var otherCollider in ignoreColliders)
+                {
+                    if (collider != otherCollider)
+                    {
+                        Physics.IgnoreCollision(collider, otherCollider,true);
+                    }
+                }
             }
         }
+
     }
 }

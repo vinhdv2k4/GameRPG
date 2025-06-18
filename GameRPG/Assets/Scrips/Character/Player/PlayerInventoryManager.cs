@@ -5,5 +5,11 @@ namespace TV
     {
         public WeaponItem currentRightWeapon;
         public WeaponItem currentLeftWeapon;
+
+        [Header("Quick Slot")]
+        public WeaponItem[] weaponsInRightHandSlots = new WeaponItem[3];
+        public int rightHandWeaponIndex = 0;
+        public WeaponItem[] weaponsInLeftHandSlots = new WeaponItem[3];
+        public int leftHandWeaponIndex = 0;
     }
 }

@@ -16,7 +16,11 @@ namespace TV
             character.applyRootMotion = false;
             character.canMove = true;
             character.canRotate = true;
-            character.isJumping = false;
+            if (character.IsOwner)
+            {
+                character.characterNetworkManager.isJumping.Value = false;
+
+            }
 
         }
         //override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)

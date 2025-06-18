@@ -7710,6 +7710,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd76488dc2596e64bacab1d74550e824, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damageCollider: {fileID: 0}
   physicDamage: 25
   magicDamage: 0
   fireDamage: 0
