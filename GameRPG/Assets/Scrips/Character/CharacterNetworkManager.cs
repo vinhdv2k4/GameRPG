@@ -21,6 +21,7 @@ namespace TV
 
         [Header("Frags")]
         public NetworkVariable<bool> isSprinting= new NetworkVariable<bool>(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+        public NetworkVariable<bool> isJumping = new NetworkVariable<bool>(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
 
         [Header("Resources")]
         
@@ -78,6 +79,92 @@ namespace TV
             character.applyRootMotion = applyRootMotion;
             character.animator.CrossFade(animationID,0.2f);
 
+        }
+
+
+        [ServerRpc]
+        public void NotifiTheServerOfAttackActionAnimationServerRpc(ulong clientID, string animationID, bool applyRootMotion)
+        {
+            if (IsServer)
+            {
+                PlayerAttackActionForAllClientRpc(clientID, animationID, applyRootMotion);
+            }
+        }
+
+        [ClientRpc]
+        public void PlayerAttackActionForAllClientRpc(ulong clientID, string animationID, bool applyRootMotion)
+        {
+            if (clientID != NetworkManager.Singleton.LocalClientId)
+            {
+                PerformAttackActionAnimationFromServer(animationID, applyRootMotion);
+            }
+        }
+
+        private void PerformAttackActionAnimationFromServer(string animationID, bool applyRootMotion)
+        {
+            character.applyRootMotion = applyRootMotion;
+            character.animator.CrossFade(animationID, 0.2f);
+
+        }
+
+
+        [ServerRpc(RequireOwnership = false)]
+        public void NotifyTheServerOfCharacterDamageServerRpc(
+            ulong damagedCharaterID,
+            ulong attackingCharacterDamageID,
+            float physicDamage,
+            float magicDamage,
+            float fireDamage,
+            float lightningDamage,
+            float holyDamage,
+            float poisonDamage,
+            float poiseDamage,
+            float angleHitFrom,
+            float contactPointX,
+            float contactPointY,
+            float contactPointZ
+            )
+        {
+            if (IsServer)
+            {
+                NotifyTheServerOfCharacterDamageClientRpc(damagedCharaterID, attackingCharacterDamageID, physicDamage, magicDamage, fireDamage, lightningDamage, holyDamage, poisonDamage, poiseDamage, angleHitFrom, contactPointX, contactPointY, contactPointZ);
+            }
+        }
+
+        [ClientRpc]
+        public void NotifyTheServerOfCharacterDamageClientRpc(
+            ulong damagedCharaterID,
+            ulong characterCasingDamageID,
+            float physicDamage,
+            float magicDamage,
+            float fireDamage,
+
+            float lightningDamage,
+            float holyDamage,
+            float poisonDamage,
+            float poiseDamage,
+            float angleHitFrom,
+            float contactPointX,
+            float contactPointY,
+            float contactPointZ
+            )
+        {
+            CharacterManager damagedCharacterManager = NetworkManager.Singleton.SpawnManager.SpawnedObjects[damagedCharaterID].GetComponent<CharacterManager>();
+            CharacterManager characterCasingDamage = NetworkManager.Singleton.SpawnManager.SpawnedObjects[characterCasingDamageID].GetComponent<CharacterManager>();
+
+            TakeDamageEffect damageEffect = Instantiate(WorldCharacterEffectManager.instance.takeDamageEffect);
+
+            damageEffect.physicDamage = physicDamage;
+            damageEffect.magicDamage = magicDamage;
+            damageEffect.fireDamage = fireDamage;
+            damageEffect.lightningDamage = lightningDamage;
+            damageEffect.holyDamage = holyDamage;
+            damageEffect.poisonDamage = poisonDamage;
+            damageEffect.poiseDamage = poiseDamage;
+            damageEffect.characterCasingDamage = characterCasingDamage;
+            damageEffect.contactPoint = new Vector3(contactPointX, contactPointY, contactPointZ);
+
+            damagedCharacterManager.characterEffectManager.ProcessInstantEffect(damageEffect);
         }
     }
 }

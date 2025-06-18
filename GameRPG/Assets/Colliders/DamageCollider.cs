@@ -6,6 +6,8 @@ namespace TV
 {
     public class DamageCollider : MonoBehaviour
     {
+        [Header("Collider")]
+        [SerializeField] protected Collider damageCollider;
         [Header("Damage")]
         public float physicDamage = 0;
         public float magicDamage = 0;
@@ -15,13 +17,19 @@ namespace TV
         public float poisonDamage = 0;
 
         [Header("Contact Point")]
-        private Vector3 contactPoint;
+        protected Vector3 contactPoint;
 
         [Header("Characters Damaged")]
         protected List<CharacterManager> charactersDamaged = new List<CharacterManager>();
-        public void OnTriggerEnter(Collider other)
+
+        protected virtual void Awake()
         {
-            CharacterManager damageTarget = other.GetComponent<CharacterManager>();
+        
+        }
+        protected virtual void OnTriggerEnter(Collider other)
+        {
+            CharacterManager damageTarget = other.GetComponentInParent<CharacterManager>();
+           
             if (damageTarget != null)
             {
                 contactPoint = other.gameObject.GetComponent<Collider>().ClosestPointOnBounds(transform.position);
@@ -48,7 +56,16 @@ namespace TV
             damageTarget.characterEffectManager.ProcessInstantEffect(takeDamageEffect);
         }
        
+        public virtual void EnableDamageCollider()
+        {
+            damageCollider.enabled = true;
+        }
 
+        public virtual void DisableDamageCollider()
+        {
+            damageCollider.enabled = false;
+            charactersDamaged.Clear(); // remove because can attack again
+        }
 
 
     }

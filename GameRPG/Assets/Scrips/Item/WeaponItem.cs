@@ -23,10 +23,17 @@ namespace TV
         [Header("Weapon Poise")]
         public int poiseDamage = 10;
 
-        [Header("Stamina Costs")]
+
+        [Header("Weapon Attack Modifiers")]
+        public float lightAttackModifier = 1.1f;   
+
+        [Header("Stamina Costs Modifier")]
         public int baseStaminaCost = 20;
+        public float lightAttackStaminaCostMultiplier = 0.9f;
 
 
+        [Header("Actions")]
+        public WeaponItemAction oh_RB_Action;
 
     }
 }

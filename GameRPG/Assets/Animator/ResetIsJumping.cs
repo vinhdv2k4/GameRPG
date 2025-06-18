@@ -13,8 +13,11 @@ namespace TV
             {
                 character = animator.GetComponent<CharacterManager>();
             }
-           
-            character.isJumping = false;
+            if (character.IsOwner)
+            {
+                character.characterNetworkManager.isJumping.Value = false;
+            }
+         
 
         }
 

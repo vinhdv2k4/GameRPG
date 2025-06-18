@@ -65,16 +65,16 @@ namespace TV
             switch (characterSlot)
             {
                 case CharacterSlot.CharacterSlot01:
-                    filename = "CharacterSlot01";
+                    filename = "CharacterSlot01.json";
                     break;
                 case CharacterSlot.CharacterSlot02:
-                    filename = "CharacterSlot02";
+                    filename = "CharacterSlot02.json";
                     break;
                 case CharacterSlot.CharacterSlot03:
-                    filename = "CharacterSlot03";
+                    filename = "CharacterSlot03.json";
                     break;
                 case CharacterSlot.CharacterSlot04:
-                    filename = "CharacterSlot04";
+                    filename = "CharacterSlot04.json";
                     break;
             }
             return filename;
@@ -106,7 +106,8 @@ namespace TV
 
         private void NewGame(){
             player.playerNetworkManager.vitality.Value = 15;
-            player.playerNetworkManager.endurance.Value = 10;   
+            player.playerNetworkManager.endurance.Value = 10;
+            saveFileDataWirte.saveFileName = DecideCharacterFileOnBasedOnCharacterSlotBeingUsed(currentCharacterSlotSavedUsed);
 
             SaveGame();
             StartCoroutine(loadWorldScence());
