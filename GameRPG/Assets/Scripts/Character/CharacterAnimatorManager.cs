@@ -76,15 +76,58 @@ namespace TV
         {
             // du lieu thay doi ma ko thay doi du lieu goc
 
-            float horizontalAmount = horizontalMovement;
-            float verticalAmount = verticalMovement;
-            if (isSprinting)
+            float snappedHorizontal = horizontalMovement;
+            float snappedVertical = verticalMovement;
+
+            if(horizontalMovement>0 && horizontalMovement < 0.5f)
             {
-                verticalAmount = 2f;
+                snappedHorizontal = 0.5f;
+            }
+            else if (horizontalMovement < 0 && horizontalMovement >= -0.5f)
+            {
+                snappedHorizontal = -0.5f;
+            }
+            else if (horizontalMovement >0.5f && horizontalMovement <=1f)    
+            {
+                snappedHorizontal = 1f;
+            }
+            else if (horizontalMovement < -0.5f && horizontalMovement >= -1f)
+            {
+                snappedHorizontal = -1f;
+            }
+            else
+            {
+                snappedHorizontal = 0f;
             }
 
-            character.animator.SetFloat(horizontal, horizontalAmount, 0.1f, Time.deltaTime);
-            character.animator.SetFloat(vertical, verticalAmount, 0.1f, Time.deltaTime);
+            if (verticalMovement > 0 && verticalMovement < 0.5f)
+            {
+                snappedVertical = 0.5f;
+            }
+            else if (verticalMovement < 0 && verticalMovement >= -0.5f)
+            {
+                snappedVertical = -0.5f;
+            }
+            else if (verticalMovement > 0.5f && verticalMovement <= 1f)
+            {
+                snappedVertical = 1f;
+            }
+            else if (verticalMovement < -0.5f && verticalMovement >= -1f)
+            {
+                snappedVertical = -1f;
+            }
+            else
+            {
+                snappedVertical = 0f;
+            }
+
+            if (isSprinting)
+            {
+                snappedVertical = 2f;
+            }
+
+            character.animator.SetFloat(horizontal, snappedHorizontal, 0.1f, Time.deltaTime);
+            character.animator.SetFloat(vertical, snappedVertical, 0.1f, Time.deltaTime);
         }
 
 

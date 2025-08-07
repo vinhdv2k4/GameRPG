@@ -70,12 +70,20 @@ namespace TV {
                 playerNetworkManager.currentStamina.OnValueChanged += playerStatsManager.ResetStaminaRegenTimer;
 
             }
+
+            //Stats
             playerNetworkManager.currentHealth.OnValueChanged += playerNetworkManager.CheckHP;
+            
+            //Lock on
+            playerNetworkManager.isLockedOn.OnValueChanged += playerNetworkManager.OnIsLockedOnChange;
+            playerNetworkManager.currentTargetNetworkObjectID.OnValueChanged += playerNetworkManager.OnLockTargetIDChange;
+
+            //Equipment
             playerNetworkManager.currentRightHandWeaponID.OnValueChanged += playerNetworkManager.OnCurrentRightHandWeaponIDChange;
             playerNetworkManager.currentLeftHandWeaponID.OnValueChanged += playerNetworkManager.OnCurrentLeftHandWeaponIDChange;
             playerNetworkManager.currentWeaponBeingUsed.OnValueChanged += playerNetworkManager.OnCurrentWeaponBeingUsedIDChange;
 
-
+                
             //upon Connecting, if player is owner, load the game data from current character data
             if (IsOwner && !IsServer)
             {
@@ -113,6 +121,7 @@ namespace TV {
             base.ReviveCharacter();
             if (IsOwner)
             {
+                isDead.Value = false;
                 playerNetworkManager.currentHealth.Value = playerNetworkManager.maxHealth.Value;
                 playerNetworkManager.currentStamina.Value = playerNetworkManager.maxStamina.Value;
 
@@ -129,11 +138,13 @@ namespace TV {
             currentCharacterData.xPosition = transform.position.x;
             currentCharacterData.zPosition = transform.position.z;
 
+            currentCharacterData.currentHealth = playerNetworkManager.currentHealth.Value;
+            currentCharacterData.curremtStamina = playerNetworkManager.currentStamina.Value;
+
             currentCharacterData.vitality = playerNetworkManager.vitality.Value;
             currentCharacterData.endurance = playerNetworkManager.endurance.Value;
 
-            currentCharacterData.currentHealth = playerNetworkManager.currentHealth.Value;
-            currentCharacterData.curremtStamina = playerNetworkManager.currentStamina.Value;
+       
         }
 
         public void LoadGameDataFromCurrentCharacterData(ref CharacterSaveData currentCharacterData) {
@@ -156,6 +167,11 @@ namespace TV {
         {
             playerNetworkManager.OnCurrentRightHandWeaponIDChange(0, playerNetworkManager.currentRightHandWeaponID.Value);
             playerNetworkManager.OnCurrentLeftHandWeaponIDChange(0, playerNetworkManager.currentLeftHandWeaponID.Value);
+
+            if (playerNetworkManager.isLockedOn.Value)
+            {
+                playerNetworkManager.OnLockTargetIDChange(0, playerNetworkManager.currentTargetNetworkObjectID.Value);
+            }
         }
         
         private void DebugMenu()

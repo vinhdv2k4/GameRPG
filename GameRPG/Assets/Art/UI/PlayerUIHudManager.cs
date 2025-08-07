@@ -5,7 +5,13 @@ namespace TV
     {
         [SerializeField] UI_Sta_Bars healthBar;
         [SerializeField] UI_Sta_Bars staminaBar;
-
+        public void RefeshHud()
+        {
+            healthBar.gameObject.SetActive(false);
+            healthBar.gameObject.SetActive(true);
+            staminaBar.gameObject.SetActive(false);
+            staminaBar.gameObject.SetActive(true);
+        }
         public void SetNewHealthValue(int oldValue, int newValue)
         {
             healthBar.SetSta(newValue);
@@ -23,12 +29,6 @@ namespace TV
             staminaBar.SetMaxSta(maxStamina);
         }
 
-        public void RefeshHud()
-        {
-            healthBar.gameObject.SetActive(false);
-            healthBar.gameObject.SetActive(true);
-            staminaBar.gameObject.SetActive(false);
-            staminaBar.gameObject.SetActive(true);
-        }
+       
     }
 }

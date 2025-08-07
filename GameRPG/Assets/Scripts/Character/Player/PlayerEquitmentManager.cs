@@ -49,7 +49,7 @@
             {
                 if (!player.IsOwner) return;
 
-                player.playerAnimatorManager.PlayerTargetActionAnimation("Swap_Right_Weapon_01", false, false, true, true);
+                player.playerAnimatorManager.PlayerTargetActionAnimation("Swap_Right_Weapon_01", false, true, true, true);
 
                 WeaponItem selectedWeapon = null;
                 // Tăng chỉ số để chuyển sang vũ khí tiếp theo

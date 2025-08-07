@@ -43,6 +43,14 @@ namespace TV
             player.playerNetworkManager.currentStamina.Value -= Mathf.RoundToInt(staminaDecducted);
         }
         
+        public override void SetTarget(CharacterManager newTarget)
+        {
+            base.SetTarget(newTarget);
+            if (player.IsOwner)
+            {
+                PlayerCamera.instance.SetLockCameraHeight();
+            }
+        }
 
     }
 }

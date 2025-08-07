@@ -19,7 +19,7 @@ namespace TV
         {
             
         }
-        public int CaculateHealthBasedOnVitalityLevel(int vitality )
+        public int CaculateHealthBasedOnVitalityLevel(float vitality )
         {
             float health = 0;
 

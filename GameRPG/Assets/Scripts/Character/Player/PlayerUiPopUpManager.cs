@@ -46,6 +46,7 @@ namespace TV {
 
                 while (timer< duration)
                 {
+                    timer += Time.deltaTime;    
                     canvas.alpha = Mathf.Lerp(canvas.alpha, 1, duration *Time.deltaTime );
                     yield return null;
 
@@ -69,6 +70,7 @@ namespace TV {
 
                 while (timer < duration)
                 {
+                    timer += Time.deltaTime;    
                     canvas.alpha = Mathf.Lerp(canvas.alpha, 0, duration*Time.deltaTime);
                     yield return null;
 

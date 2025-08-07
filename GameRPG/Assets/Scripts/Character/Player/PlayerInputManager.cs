@@ -26,6 +26,12 @@ namespace TV
         [SerializeField] bool sprintInput = false;
         [SerializeField] bool jumpInput = false;
         [SerializeField] bool RB_Input =false;
+
+        [Header("Lock On Inputs")]
+        [SerializeField] bool lockOnInput = false;
+        [SerializeField] bool lockOn_Left_Input = false;
+        [SerializeField] bool lockOn_Right_Input = false;
+        private Coroutine lockOnCoroutine;
         private void Awake()
         {
             if (instance == null)
@@ -88,6 +94,10 @@ namespace TV
                 playerControll.PlayerActions.Jump.performed += i => jumpInput = true;
                 playerControll.PlayerActions.RB.performed += i => RB_Input = true;
 
+                playerControll.PlayerActions.LockOn.performed += i => lockOnInput = true;
+                playerControll.PlayerActions.SeekLeftLockOnTarget.performed += i => lockOn_Left_Input = true;
+                playerControll.PlayerActions.SeekRightLockOnTarget.performed += i => lockOn_Right_Input = true;
+
                 // hold input , set bool =true and release set bool = false
                 playerControll.PlayerActions.Sprint.performed += i => sprintInput = true;
                 playerControll.PlayerActions.Sprint.canceled += i => sprintInput = false;
@@ -129,6 +139,8 @@ namespace TV
             HandleSprintInput();
             HandleJumpInput();
             HandleRBInput();
+            HandleLockOnInput();
+            HandleLockOnSwitchTargetInput();
 
         } 
         private void HandlePlayerMovement()
@@ -148,7 +160,17 @@ namespace TV
             if (player == null)
                 return;
             // if are not locked on, only use move amount
-            player.playerAnimatorManager.UpdateAnimatorMovementParameters(0, moveAmount, player.playerNetworkManager.isSprinting.Value);
+
+            if (!player.playerNetworkManager.isLockedOn.Value || player.playerNetworkManager.isSprinting.Value)
+            {
+                player.playerAnimatorManager.UpdateAnimatorMovementParameters(0, moveAmount, player.playerNetworkManager.isSprinting.Value);
+
+            }
+            else
+            {
+                player.playerAnimatorManager.UpdateAnimatorMovementParameters(horizontalInput, verticalInput, player.playerNetworkManager.isSprinting.Value);
+
+            }
 
         }
         
@@ -197,6 +219,75 @@ namespace TV
 
                 player.playerCombatManager.PerformWeaponBasedAction(player.playerInventoryManager.currentRightWeapon.oh_RB_Action, player.playerInventoryManager.currentRightWeapon);
             }
+        }
+
+        private void HandleLockOnInput()
+        {
+            if (player.playerNetworkManager.isLockedOn.Value)
+            {
+                if (player.playerCombatManager.currentTarget == null)
+                    return;
+                    if (player.playerCombatManager.currentTarget.isDead.Value)
+                    {
+                        player.playerNetworkManager.isLockedOn.Value = false; 
+                    }  
+                    if(lockOnCoroutine != null)
+                    StopCoroutine(lockOnCoroutine);
+                lockOnCoroutine = StartCoroutine(PlayerCamera.instance.WaitThemFindNewTarget());
+                    
+             }
+            
+            if (lockOnInput && player.playerNetworkManager.isLockedOn.Value   )
+            {
+                lockOnInput = false;
+                PlayerCamera.instance.ClearLockOnTarget();
+                player.playerNetworkManager.isLockedOn.Value = false;
+
+                return;
+            }
+            if (lockOnInput && !player.playerNetworkManager.isLockedOn.Value   )
+            {
+                lockOnInput = false;
+                PlayerCamera.instance.HandleLocatingLockOnTarget();
+
+                if(PlayerCamera.instance.nearestLockOnTarget != null)
+                {
+                    player.playerCombatManager.SetTarget(PlayerCamera.instance.nearestLockOnTarget);
+                    player.playerNetworkManager.isLockedOn.Value = true;
+                }
+            }
+        }
+
+
+        public void HandleLockOnSwitchTargetInput()
+        {
+            if (lockOn_Left_Input)
+            {
+                lockOn_Left_Input = false;
+                if (player.playerNetworkManager.isLockedOn.Value)
+                {
+                    PlayerCamera.instance.HandleLocatingLockOnTarget();
+                    if(PlayerCamera.instance.leftLockOnTarget != null)
+                    {
+                        player.playerCombatManager.SetTarget(PlayerCamera.instance.leftLockOnTarget);
+                    }
+                }
+
+            }
+            if (lockOn_Right_Input)
+            {
+                lockOn_Right_Input = false;
+                if (player.playerNetworkManager.isLockedOn.Value)
+                {
+                    PlayerCamera.instance.HandleLocatingLockOnTarget();
+                    if(PlayerCamera.instance.rightLockOnTarget != null)
+                    {
+                        player.playerCombatManager.SetTarget(PlayerCamera.instance.rightLockOnTarget);
+                    }
+                }
+
+            }
+
         }
     }
 }

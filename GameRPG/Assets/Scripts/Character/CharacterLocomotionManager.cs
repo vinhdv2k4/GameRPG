@@ -16,6 +16,9 @@ public class CharaterLocomotionManager : MonoBehaviour
         protected bool fallingVelocityHasBeenSet = false;
         protected float inAirTimer = 0;
 
+        [Header("Frag")]
+        [SerializeField] public bool isRolling = false;
+
 
         protected virtual void Awake()
     {

@@ -65,16 +65,16 @@ namespace TV
             switch (characterSlot)
             {
                 case CharacterSlot.CharacterSlot01:
-                    filename = "CharacterSlot01.json";
+                    filename = "CharacterSlot01";
                     break;
                 case CharacterSlot.CharacterSlot02:
-                    filename = "CharacterSlot02.json";
+                    filename = "CharacterSlot02";
                     break;
                 case CharacterSlot.CharacterSlot03:
-                    filename = "CharacterSlot03.json";
+                    filename = "CharacterSlot03";
                     break;
                 case CharacterSlot.CharacterSlot04:
-                    filename = "CharacterSlot04.json";
+                    filename = "CharacterSlot04";
                     break;
             }
             return filename;
@@ -82,32 +82,66 @@ namespace TV
 
         public void CreateNewGame()
         {
-            saveFileDataWirte = new SaveFileDataWirte();
-            saveFileDataWirte.saveDataDirectionPath = Application.persistentDataPath;
-            // check to see if create a new save fiile (check other exits file)
-            saveFileDataWirte = new SaveFileDataWirte();
-            saveFileDataWirte.saveDataDirectionPath = Application.persistentDataPath;
 
-            foreach (CharacterSlot slot in Enum.GetValues(typeof(CharacterSlot)))
+            saveFileDataWirte = new SaveFileDataWirte();
+            saveFileDataWirte.saveDataDirectionPath  = Application.persistentDataPath;
+
+
+            // CHECK TO SEE IF WE CAN MAKE A NEW SAVE FILE (CHECK FOR OTHER EXISTING FILES FIRST)
+            saveFileDataWirte.saveFileName = DecideCharacterFileOnBasedOnCharacterSlotBeingUsed(CharacterSlot.CharacterSlot01);
+
+            if (!saveFileDataWirte.CheckToSeeFileExits())
             {
-                saveFileDataWirte.saveFileName = DecideCharacterFileOnBasedOnCharacterSlotBeingUsed(slot);
+                // IF THIS PROFILE SLOT IS NOT TAKEN, MAKE A NEW ONE USING THIS SLOT
+                currentCharacterSlotSavedUsed = CharacterSlot.CharacterSlot01;
+                currentCharacterData = new CharacterSaveData();
 
-                if (!saveFileDataWirte.CheckToSeeFileExits())
-                {
-                    currentCharacterSlotSavedUsed = slot;
-                    currentCharacterData = new CharacterSaveData();
-                    NewGame();
-                    return;
-                }
+                NewGame();
+                return;
+            }
+
+            // CHECK TO SEE IF WE CAN MAKE A NEW SAVE FILE (CHECK FOR OTHER EXISTING FILES FIRST)
+            saveFileDataWirte.saveFileName = DecideCharacterFileOnBasedOnCharacterSlotBeingUsed(CharacterSlot.CharacterSlot02);
+
+            if (!saveFileDataWirte.CheckToSeeFileExits())
+            {
+                // IF THIS PROFILE SLOT IS NOT TAKEN, MAKE A NEW ONE USING THIS SLOT
+                currentCharacterSlotSavedUsed = CharacterSlot.CharacterSlot02;
+                currentCharacterData = new CharacterSaveData();
+
+                NewGame();
+                return;
+            }
+            saveFileDataWirte.saveFileName = DecideCharacterFileOnBasedOnCharacterSlotBeingUsed(CharacterSlot.CharacterSlot03);
+
+            if (!saveFileDataWirte.CheckToSeeFileExits())
+            {
+                // IF THIS PROFILE SLOT IS NOT TAKEN, MAKE A NEW ONE USING THIS SLOT
+                currentCharacterSlotSavedUsed = CharacterSlot.CharacterSlot03;
+                currentCharacterData = new CharacterSaveData();
+
+                NewGame();
+                return;
+            }
+            saveFileDataWirte.saveFileName = DecideCharacterFileOnBasedOnCharacterSlotBeingUsed(CharacterSlot.CharacterSlot04);
+
+            if (!saveFileDataWirte.CheckToSeeFileExits())
+            {
+                // IF THIS PROFILE SLOT IS NOT TAKEN, MAKE A NEW ONE USING THIS SLOT
+                currentCharacterSlotSavedUsed = CharacterSlot.CharacterSlot04;
+                currentCharacterData = new CharacterSaveData();
+
+                NewGame();
+                return;
             }
 
             TitleScreen.instance.DisplayeNoFreeCharacterSlotPopUp();
         }
 
         private void NewGame(){
-            player.playerNetworkManager.vitality.Value = 15;
+            player.playerNetworkManager.vitality.Value = 10;
             player.playerNetworkManager.endurance.Value = 10;
-            saveFileDataWirte.saveFileName = DecideCharacterFileOnBasedOnCharacterSlotBeingUsed(currentCharacterSlotSavedUsed);
+
 
             SaveGame();
             StartCoroutine(loadWorldScence());

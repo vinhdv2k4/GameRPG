@@ -34,7 +34,7 @@ namespace TV
                 }
             }
         }
-
+            
         public void RemovePlayerFromActivePlayersList(PlayerManager player)
         {
             if (players.Contains(player))

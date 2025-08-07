@@ -18,6 +18,7 @@ namespace TV
         [HideInInspector] public CharacterAnimatorManager characterAnimatorManager;
         [HideInInspector] public CharacterCombatManager characterCombatManager;
         [HideInInspector] public CharacterSoundFxManager characterSoundFxManager;
+        [HideInInspector]public CharaterLocomotionManager characterLocomotionManager;
 
         [Header("Flags")]
         public bool isPerformingAction;
@@ -43,6 +44,7 @@ namespace TV
             characterAnimatorManager = GetComponent<CharacterAnimatorManager>();
             characterCombatManager = GetComponent<CharacterCombatManager>();
             characterSoundFxManager = GetComponent<CharacterSoundFxManager>();
+            characterLocomotionManager = GetComponent<CharaterLocomotionManager>();
         }
         protected virtual void Update()
         {
