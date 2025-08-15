@@ -48,12 +48,14 @@
             public void SwitchRightWeapon()
             {
                 if (!player.IsOwner) return;
+                if (player.isDead.Value)
+                return;
 
-                player.playerAnimatorManager.PlayerTargetActionAnimation("Swap_Right_Weapon_01", false, true, true, true);
+            player.playerAnimatorManager.PlayerTargetActionAnimation("Swap_Right_Weapon_01", false, false, true, true);
 
                 WeaponItem selectedWeapon = null;
                 // Tăng chỉ số để chuyển sang vũ khí tiếp theo
-                player.playerInventoryManager.rightHandWeaponIndex++;
+                player.playerInventoryManager.rightHandWeaponIndex+=1;
 
                 // Nếu vượt giới hạn slot, reset về 0
                 if (player.playerInventoryManager.rightHandWeaponIndex > 2 || player.playerInventoryManager.rightHandWeaponIndex < 0)
@@ -74,7 +76,6 @@
 
                         }
                     }
-                    return;
                 }
 
 
@@ -128,8 +129,68 @@
 
             public void SwitchLeftWeapon()
             {
-           
+            if (!player.IsOwner) return;
+            if (player.isDead.Value)
+                return;
+
+            player.playerAnimatorManager.PlayerTargetActionAnimation("Swap_Left_Weapon_01 ", false, false, true, true);
+
+            WeaponItem selectedWeapon = null;
+            // Tăng chỉ số để chuyển sang vũ khí tiếp theo
+            player.playerInventoryManager.leftHandWeaponIndex++;
+
+            // Nếu vượt giới hạn slot, reset về 0
+            if (player.playerInventoryManager.leftHandWeaponIndex > 2 || player.playerInventoryManager.leftHandWeaponIndex < 0)
+            {
+                player.playerInventoryManager.leftHandWeaponIndex = 0;
+                float weaponCount = 0;
+                WeaponItem firstweapon = null;
+                int firstWeaponPosition = 0;
+                for (int i = 0; i < player.playerInventoryManager.weaponsInLeftHandSlots.Length; i++)
+                {
+                    if (player.playerInventoryManager.weaponsInLeftHandSlots[i].itemID != WorldItemDataBase.instance.unWeapon.itemID)
+                    {
+                        weaponCount++;
+                        if (firstweapon == null)
+                        {
+                            firstweapon = player.playerInventoryManager.weaponsInLeftHandSlots[i];
+                            firstWeaponPosition = i;
+
+                        }
+                    }
+                   
+                }
+
+
+                if (weaponCount <= 1)
+                {
+                    player.playerInventoryManager.leftHandWeaponIndex = -1;
+                    selectedWeapon = WorldItemDataBase.instance.unWeapon;
+                    player.playerNetworkManager.currentLeftHandWeaponID.Value = selectedWeapon.itemID;
+                }
+                else
+                {
+                    player.playerInventoryManager.leftHandWeaponIndex = firstWeaponPosition;
+                    player.playerNetworkManager.currentLeftHandWeaponID.Value = firstweapon.itemID;
+                }
+                return;
             }
+
+
+            foreach (WeaponItem weapon in player.playerInventoryManager.weaponsInLeftHandSlots)
+            {
+                if (player.playerInventoryManager.weaponsInLeftHandSlots[player.playerInventoryManager.leftHandWeaponIndex].itemID != WorldItemDataBase.instance.unWeapon.itemID)
+                {
+                    selectedWeapon = player.playerInventoryManager.weaponsInLeftHandSlots[player.playerInventoryManager.leftHandWeaponIndex];
+                    player.playerNetworkManager.currentLeftHandWeaponID.Value = player.playerInventoryManager.weaponsInLeftHandSlots[player.playerInventoryManager.leftHandWeaponIndex].itemID;
+                    return;
+                }
+            }
+            if (selectedWeapon == null && player.playerInventoryManager.leftHandWeaponIndex <= 2)
+            {
+                SwitchLeftWeapon();
+            }
+        }
             public void LoadLeftWeapon()
             {
                 if (player.playerInventoryManager.currentLeftWeapon != null)
@@ -147,10 +208,12 @@
             if (player.playerNetworkManager.isUsingRightHand.Value)
             {
                 rightWeaponManager.meleeDamageCollider.EnableDamageCollider();
+                player.characterSoundFxManager.PlayerSoundFX(WorldSoundFXManager.instance.ChoseRandomSFXFromArray(player.playerInventoryManager.currentRightWeapon.whooshes));
             }
             else if (player.playerNetworkManager.isUsingLeftHand.Value)
             {
                 leftWeaponManager.meleeDamageCollider.EnableDamageCollider();
+                player.characterSoundFxManager.PlayerSoundFX(WorldSoundFXManager.instance.ChoseRandomSFXFromArray(player.playerInventoryManager.currentLeftWeapon.whooshes));
             }
         }
 

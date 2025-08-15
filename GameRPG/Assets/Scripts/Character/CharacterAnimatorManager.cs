@@ -11,6 +11,9 @@ namespace TV
         int horizontal;
         int vertical;
 
+        [Header("Flags")]
+        public bool applyRootMotion = false;
+
         [Header("Damage Animations")]
         public string lastDamageAnimationPlayed;
         [SerializeField] string hit_Forward_Medium_01 = "hit_Forward_Medium_01";
@@ -79,7 +82,7 @@ namespace TV
             float snappedHorizontal = horizontalMovement;
             float snappedVertical = verticalMovement;
 
-            if(horizontalMovement>0 && horizontalMovement < 0.5f)
+            if(horizontalMovement>0 && horizontalMovement <= 0.5f)
             {
                 snappedHorizontal = 0.5f;
             }
@@ -100,7 +103,7 @@ namespace TV
                 snappedHorizontal = 0f;
             }
 
-            if (verticalMovement > 0 && verticalMovement < 0.5f)
+            if (verticalMovement > 0 && verticalMovement <= 0.5f)
             {
                 snappedVertical = 0.5f;
             }
@@ -139,14 +142,14 @@ namespace TV
             bool canMove = false, 
             bool canRotate =false)
         {
-            Debug.Log($"PlayerTargetActionAnimation: {targetAnimation}");
-            character.applyRootMotion = applyRootMotion;
+  
+            character.characterAnimatorManager.applyRootMotion = applyRootMotion;
             character.animator.CrossFade(targetAnimation, 0.2f);
 
             // stop character attemting new action, if main get damage and beging a damage action, this frag will true
             character.isPerformingAction = isPerformingAction;
-            character.canMove = canMove;
-            character.canRotate = canRotate;
+            character.characterLocomotionManager.canMove = canMove;
+            character.characterLocomotionManager.canRotate = canRotate;
             character.characterNetworkManager.NotifiTheServerActionAnimationServerRpc(
                 NetworkManager.Singleton.LocalClientId,
                 targetAnimation,
@@ -160,18 +163,30 @@ namespace TV
             bool canMove = false,
             bool canRotate = false)
         {
-            character.applyRootMotion = applyRootMotion;
+            this.applyRootMotion = applyRootMotion;
             character.animator.CrossFade(targetAnimation, 0.2f);
 
             // stop character attemting new action, if main get damage and beging a damage action, this frag will true
             character.characterCombatManager.currentAttackSyle = attackStyle;
+            character.characterCombatManager.lastAttackAnimationPerformed = targetAnimation;
             character.isPerformingAction = isPerformingAction;
-            character.canMove = canMove;
-            character.canRotate = canRotate;
+            character.characterLocomotionManager.canMove = canMove;
+            character.characterLocomotionManager.canRotate = canRotate;
             character.characterNetworkManager.NotifiTheServerOfAttackActionAnimationServerRpc(
                 NetworkManager.Singleton.LocalClientId,
                 targetAnimation,
                 applyRootMotion);
+        }
+
+        public virtual void EnableCanDoCombo()
+        {
+         
+        }
+        public virtual void DisableCanDoCombo() 
+        {
+
+          
+
         }
     }
 }

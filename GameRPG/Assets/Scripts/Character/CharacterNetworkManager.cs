@@ -14,6 +14,7 @@ namespace TV
 
 
         [Header("Animator")]
+        public NetworkVariable<bool> isMoving = new NetworkVariable<bool>(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
         public NetworkVariable<float> networkAnimatorHorizontal = new NetworkVariable<float>(0f, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
         public NetworkVariable<float> networkAnimatorVertical = new NetworkVariable<float>(0f, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
         public NetworkVariable<float> networkAnimatorMoveAmout = new NetworkVariable<float>(0f, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
@@ -25,6 +26,7 @@ namespace TV
         public NetworkVariable<bool> isLockedOn = new NetworkVariable<bool>(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
         public NetworkVariable<bool> isSprinting= new NetworkVariable<bool>(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
         public NetworkVariable<bool> isJumping = new NetworkVariable<bool>(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+        public NetworkVariable<bool> isChargingAttack = new NetworkVariable<bool>(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
 
         [Header("Resources")]
         
@@ -74,7 +76,18 @@ namespace TV
                 character.characterCombatManager.currentTarget =null;
             }
         }
-        
+
+        public void OnIsChargingAttackChange(bool oldValue, bool newValue)
+        {
+                character.animator.SetBool("isChargingAttack", isChargingAttack.Value);
+            
+        }
+
+        public void OnIsMovingChanged(bool oldStatus, bool newStatus)
+        {
+            character.animator.SetBool("isMoving", isMoving.Value);
+        }
+
         [ServerRpc]
         public void NotifiTheServerActionAnimationServerRpc(ulong clientID, string  animationID, bool applyRootMotion)
         {
@@ -95,7 +108,7 @@ namespace TV
 
         private void PerformActionAnimationFromServer(string animationID, bool applyRootMotion)
         {
-            character.applyRootMotion = applyRootMotion;
+            character.characterAnimatorManager.applyRootMotion = applyRootMotion;
             character.animator.CrossFade(animationID,0.2f);
 
         }
@@ -121,7 +134,7 @@ namespace TV
 
         private void PerformAttackActionAnimationFromServer(string animationID, bool applyRootMotion)
         {
-            character.applyRootMotion = applyRootMotion;
+            character.characterAnimatorManager.applyRootMotion = applyRootMotion;
             character.animator.CrossFade(animationID, 0.2f);
 
         }

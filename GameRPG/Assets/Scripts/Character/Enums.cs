@@ -21,6 +21,17 @@ public enum WeaponModelSlot
 
 public enum  AttackStyle
 {
-    lightAttack,
+    lightAttack01,
+    lightAttack02,
+    heavyAttack01,
+    heavyAttack02,
+    chargeAttack01,
+    chargeAttack02,
+}
+
+public enum  ChacterGroup
+{
+    Team01,
+    Team02,
 }
 

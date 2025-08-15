@@ -25,13 +25,22 @@ namespace TV
         [SerializeField ] bool  dodgeInput =false;
         [SerializeField] bool sprintInput = false;
         [SerializeField] bool jumpInput = false;
-        [SerializeField] bool RB_Input =false;
+        [SerializeField] bool switch_Right_Weapon_Input = false;
+        [SerializeField] bool switch_Left_Weapon_Input = false;
 
         [Header("Lock On Inputs")]
         [SerializeField] bool lockOnInput = false;
         [SerializeField] bool lockOn_Left_Input = false;
         [SerializeField] bool lockOn_Right_Input = false;
         private Coroutine lockOnCoroutine;
+
+        [Header("Bumper Inputs ")]
+        [SerializeField] bool RB_Input =false;
+
+        [Header("Trigger Inputs")]
+        [SerializeField] bool RT_Input = false;
+        [SerializeField] bool Hold_RT_Input = false;
+
         private void Awake()
         {
             if (instance == null)
@@ -90,10 +99,21 @@ namespace TV
                 playerControll.PlayerCamera.Movement.performed += i => cameraInput = i.ReadValue<Vector2>();
                 playerControll.PlayerCamera.Movement.canceled += i => cameraInput = Vector2.zero;
 
+                //Action
                 playerControll.PlayerActions.Dodge.performed += i => dodgeInput = true;
                 playerControll.PlayerActions.Jump.performed += i => jumpInput = true;
+                playerControll.PlayerActions.SwitchRightWeapon.performed += i => switch_Right_Weapon_Input = true;
+                playerControll.PlayerActions.SwitchLeftWeapon.performed += i => switch_Left_Weapon_Input = true;
+
+                //Bumper
                 playerControll.PlayerActions.RB.performed += i => RB_Input = true;
 
+                //Trigger
+                playerControll.PlayerActions.RT.performed += i => RT_Input = true;
+                playerControll.PlayerActions.HoldRT.performed += i => Hold_RT_Input = true;
+                playerControll.PlayerActions.HoldRT.canceled += i => Hold_RT_Input = false;
+
+                //Lock On
                 playerControll.PlayerActions.LockOn.performed += i => lockOnInput = true;
                 playerControll.PlayerActions.SeekLeftLockOnTarget.performed += i => lockOn_Left_Input = true;
                 playerControll.PlayerActions.SeekRightLockOnTarget.performed += i => lockOn_Right_Input = true;
@@ -141,6 +161,10 @@ namespace TV
             HandleRBInput();
             HandleLockOnInput();
             HandleLockOnSwitchTargetInput();
+            HandleRTInput();
+            HandleChargeInput();
+            HandleSwitchRightWeaponInput();
+            HandleSwitchLeftWeaponInput();
 
         } 
         private void HandlePlayerMovement()
@@ -149,17 +173,26 @@ namespace TV
             horizontalInput = movement.x;
 
             moveAmount = Mathf.Clamp01(Mathf.Abs(verticalInput) + Mathf.Abs(horizontalInput));
-            if (moveAmount < 0.5 && moveAmount > 0)
+            if (moveAmount <= 0.5 && moveAmount > 0)
             {
                 moveAmount = 0.5f;
             }
-            else if (moveAmount >= 0.5f && moveAmount <= 1)
+            else if (moveAmount > 0.5f && moveAmount <= 1)
             {
                 moveAmount = 1f;
             }
             if (player == null)
                 return;
             // if are not locked on, only use move amount
+
+            if(moveAmount != 0)
+            {
+                player.playerNetworkManager.isMoving.Value = true;
+            }
+            else
+            {
+                player.playerNetworkManager.isMoving.Value = false;
+            }
 
             if (!player.playerNetworkManager.isLockedOn.Value || player.playerNetworkManager.isSprinting.Value)
             {
@@ -210,16 +243,7 @@ namespace TV
             }
         }
 
-       private void HandleRBInput()
-        {
-            if (RB_Input)
-            {
-                RB_Input = false;
-                player.playerNetworkManager.SetCharacterActionHand(true);
-
-                player.playerCombatManager.PerformWeaponBasedAction(player.playerInventoryManager.currentRightWeapon.oh_RB_Action, player.playerInventoryManager.currentRightWeapon);
-            }
-        }
+     
 
         private void HandleLockOnInput()
         {
@@ -288,6 +312,55 @@ namespace TV
 
             }
 
+        }
+
+        public void HandleRBInput()
+        {
+            if (RB_Input)
+            {
+                RB_Input = false;
+                player.playerNetworkManager.SetCharacterActionHand(true);
+
+                player.playerCombatManager.PerformWeaponBasedAction(player.playerInventoryManager.currentRightWeapon.oh_RB_Action, player.playerInventoryManager.currentRightWeapon);
+            }
+        }
+
+        public void HandleRTInput()
+        {
+            if (RT_Input)
+            {
+                RT_Input = false;
+                player.playerNetworkManager.SetCharacterActionHand(true);
+                player.playerCombatManager.PerformWeaponBasedAction(player.playerInventoryManager.currentRightWeapon.oh_RT_Action, player.playerInventoryManager.currentRightWeapon);
+            }
+        }
+
+        private void HandleChargeInput()
+        {
+            if (player.isPerformingAction)
+            {
+                if (player.playerNetworkManager.isUsingRightHand.Value)
+                {
+                    player.playerNetworkManager.isChargingAttack.Value = Hold_RT_Input;
+                }
+            }
+        }
+
+        private void HandleSwitchRightWeaponInput()
+        {
+            if (switch_Right_Weapon_Input)
+            {
+                switch_Right_Weapon_Input = false;
+                player.playerEquitmentManager.SwitchRightWeapon();
+            }
+        }
+        private void HandleSwitchLeftWeaponInput()
+        {
+            if (switch_Left_Weapon_Input)
+            {
+                switch_Left_Weapon_Input = false;
+                player.playerEquitmentManager.SwitchLeftWeapon();
+            }
         }
     }
 }

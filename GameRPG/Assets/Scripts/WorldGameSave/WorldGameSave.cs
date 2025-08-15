@@ -1,5 +1,6 @@
-using System;
+﻿using System;
 using System.Collections;
+using Unity.Netcode;
 using Unity.Services.Lobbies.Models;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -48,7 +49,7 @@ namespace TV
         {
             if (saveGame)
             {
-                    saveGame = false;
+                saveGame = false;
                 SaveGame();
             }
             if (loadGame)
@@ -56,6 +57,8 @@ namespace TV
                 loadGame = false;
                 LoadGame();
             }
+
+           
 
         }
 
@@ -84,7 +87,7 @@ namespace TV
         {
 
             saveFileDataWirte = new SaveFileDataWirte();
-            saveFileDataWirte.saveDataDirectionPath  = Application.persistentDataPath;
+            saveFileDataWirte.saveDataDirectionPath = Application.persistentDataPath;
 
 
             // CHECK TO SEE IF WE CAN MAKE A NEW SAVE FILE (CHECK FOR OTHER EXISTING FILES FIRST)
@@ -138,7 +141,8 @@ namespace TV
             TitleScreen.instance.DisplayeNoFreeCharacterSlotPopUp();
         }
 
-        private void NewGame(){
+        private void NewGame()
+        {
             player.playerNetworkManager.vitality.Value = 10;
             player.playerNetworkManager.endurance.Value = 10;
 
@@ -150,13 +154,55 @@ namespace TV
         public void LoadGame()
         {
             saveFileName = DecideCharacterFileOnBasedOnCharacterSlotBeingUsed(currentCharacterSlotSavedUsed);
-           
+
             saveFileDataWirte = new SaveFileDataWirte();
-            saveFileDataWirte.saveDataDirectionPath =Application.persistentDataPath;
+            saveFileDataWirte.saveDataDirectionPath = Application.persistentDataPath;
             saveFileDataWirte.saveFileName = saveFileName;
             currentCharacterData = saveFileDataWirte.LoadSaveFile();
 
-            StartCoroutine(loadWorldScence());
+            if (NetworkManager.Singleton != null && NetworkManager.Singleton.IsClient && !NetworkManager.Singleton.IsHost)
+            {
+                // Client request server to load game
+                RequestLoadGameServerRpc(currentCharacterData);
+            }
+            else
+            {
+                // Host or single player
+                StartCoroutine(loadWorldScence());
+            }
+        }
+
+        [ServerRpc(RequireOwnership = false)]
+        private void RequestLoadGameServerRpc(CharacterSaveData characterData, ServerRpcParams serverRpcParams = default)
+        {
+            // Server xử lý load game request từ client
+            var clientId = serverRpcParams.Receive.SenderClientId;
+
+            // Tìm player của client
+            if (NetworkManager.Singleton.ConnectedClients.TryGetValue(clientId, out var clientObject))
+            {
+                var clientPlayer = clientObject.PlayerObject?.GetComponent<PlayerManager>();
+                if (clientPlayer != null)
+                {
+                    // Load data cho client player
+                    clientPlayer.LoadGameDataFromCurrentCharacterData(ref characterData);
+
+                    // Thông báo cho client là đã load xong
+                    NotifyLoadGameCompleteClientRpc(new ClientRpcParams
+                    {
+                        Send = new ClientRpcSendParams
+                        {
+                            TargetClientIds = new[] { clientId }
+                        }
+                    });
+                }
+            }
+        }
+
+        [ClientRpc]
+        private void NotifyLoadGameCompleteClientRpc(ClientRpcParams clientRpcParams = default)
+        {
+           
         }
 
         public void SaveGame()
@@ -174,7 +220,7 @@ namespace TV
 
         public void DeleteGame(CharacterSlot characterSlot)
         {
-          
+
             saveFileDataWirte = new SaveFileDataWirte();
             saveFileDataWirte.saveDataDirectionPath = Application.persistentDataPath;
             saveFileDataWirte.saveFileName = DecideCharacterFileOnBasedOnCharacterSlotBeingUsed(characterSlot);
@@ -211,8 +257,5 @@ namespace TV
         {
             return worldSceneIndex;
         }
-
-
-
     }
 }

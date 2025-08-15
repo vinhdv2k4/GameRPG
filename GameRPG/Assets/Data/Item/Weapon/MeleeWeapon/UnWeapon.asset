@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: UnWeapon
   m_EditorClassIdentifier: 
   itemName: 
-  itemIcon: {fileID: 0}
+  itemIcon: {fileID: 21300000, guid: 79aba0b290c471c4ba3d3f818d4e9b15, type: 3}
   itemDescription: 
   itemID: 0
   weaponModel: {fileID: 2702784533643185716, guid: d51931adaad55fe4cac70be205dcce61, type: 3}
@@ -28,4 +28,10 @@ MonoBehaviour:
   HolyDamage: 0
   poisonDamage: 0
   poiseDamage: 10
+  lightAttackModifier: 1.1
+  heavyAttackModifier: 1.5
+  chargeAttackModifier: 2
   baseStaminaCost: 5
+  lightAttackStaminaCostMultiplier: 0.9
+  oh_RB_Action: {fileID: 0}
+  oh_RT_Action: {fileID: 0}

@@ -18,14 +18,15 @@ namespace TV
         [HideInInspector] public CharacterAnimatorManager characterAnimatorManager;
         [HideInInspector] public CharacterCombatManager characterCombatManager;
         [HideInInspector] public CharacterSoundFxManager characterSoundFxManager;
-        [HideInInspector]public CharaterLocomotionManager characterLocomotionManager;
+        [HideInInspector]public CharacterLocomotionManager characterLocomotionManager;
+
+        [Header("Character Group")]
+        public ChacterGroup characterGroup;
 
         [Header("Flags")]
         public bool isPerformingAction;
-        public bool applyRootMotion = false;
-        public bool canMove = true;
-        public bool canRotate = true;
-        public bool isGrounded = true;
+   
+     
 
 
         protected virtual void Start()
@@ -44,11 +45,11 @@ namespace TV
             characterAnimatorManager = GetComponent<CharacterAnimatorManager>();
             characterCombatManager = GetComponent<CharacterCombatManager>();
             characterSoundFxManager = GetComponent<CharacterSoundFxManager>();
-            characterLocomotionManager = GetComponent<CharaterLocomotionManager>();
+            characterLocomotionManager = GetComponent<CharacterLocomotionManager>();
         }
         protected virtual void Update()
         {
-            animator.SetBool("IsGrounded", isGrounded);
+            animator.SetBool("IsGrounded",characterLocomotionManager.isGrounded);
             if (IsOwner)
             {
                 characterNetworkManager.networkPosition.Value = transform.position;
@@ -66,8 +67,25 @@ namespace TV
             }
         }
 
+        protected virtual void FixedUpdate()
+        {
+           
+        }
         protected virtual void LateUpdate()
         {
+        }
+
+        public override void OnNetworkSpawn()
+        {
+            base.OnNetworkSpawn();
+            animator.SetBool("IsMoving", characterNetworkManager.isMoving.Value);
+            characterNetworkManager.isMoving.OnValueChanged += characterNetworkManager.OnIsMovingChanged;
+        }
+        public override void OnNetworkDespawn()
+        {
+            base.OnNetworkDespawn();
+            characterNetworkManager.isMoving.OnValueChanged -= characterNetworkManager.OnIsMovingChanged;
+
         }
 
         public virtual IEnumerator ProcessDeathEvent(bool manuallySelectDeathAnimation = false)

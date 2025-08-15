@@ -47,7 +47,7 @@ namespace TV
             
             PlayDamageVFX(character);
 
-            PlayeDamageSFX(character);
+            PlayDamageSFX(character);
         }
         private void CaculateDamage(CharacterManager character)
         {
@@ -71,10 +71,11 @@ namespace TV
         {
             character.characterEffectManager.PlayBloodSpatterVFX(contactPoint);
         }
-        private void PlayeDamageSFX(CharacterManager character)
+        private void PlayDamageSFX(CharacterManager character)
         {
             AudioClip physicalDamageSFX = WorldSoundFXManager.instance.ChoseRandomSFXFromArray(WorldSoundFXManager.instance.PhysicdamageSFX);
             character.characterSoundFxManager.PlayerSoundFX(physicalDamageSFX);
+            character.characterSoundFxManager.PlayDamageGrunt();
         }
 
         private void PlayDirectionalBasedDamageAnimation(CharacterManager character)

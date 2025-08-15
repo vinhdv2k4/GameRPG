@@ -8,6 +8,10 @@ namespace TV
 
         public WeaponItem currentWeaponBeingUsed;
 
+        [Header("Flags")]
+        public bool canComboWithMainHandWeapon = false;
+        //public bool canComboWithOffHandWeapon = false;
+
         protected override void Awake()
         {
             base.Awake();
@@ -24,7 +28,7 @@ namespace TV
 
         public virtual void DrainStaminaBasedOnAttack()
         {
-            if(!player.IsOwner)
+            if (!player.IsOwner)
                 return;
 
             if (currentWeaponBeingUsed == null)
@@ -33,7 +37,7 @@ namespace TV
 
             switch (currentAttackSyle)
             {
-                case AttackStyle.lightAttack:
+                case AttackStyle.lightAttack01:
                     staminaDecducted = currentWeaponBeingUsed.baseStaminaCost * currentWeaponBeingUsed.lightAttackStaminaCostMultiplier;
                     break;
                 default:
@@ -42,7 +46,7 @@ namespace TV
 
             player.playerNetworkManager.currentStamina.Value -= Mathf.RoundToInt(staminaDecducted);
         }
-        
+
         public override void SetTarget(CharacterManager newTarget)
         {
             base.SetTarget(newTarget);

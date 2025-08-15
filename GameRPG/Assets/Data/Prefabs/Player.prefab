@@ -786,17 +786,23 @@ MonoBehaviour:
   networkPositionVelocity: {x: 0, y: 0, z: 0}
   networkPositionSmoothTime: 0.1
   networkRotationSmoothTime: 0.1
+  isMoving:
+    m_InternalValue: 0
   networkAnimatorHorizontal:
     m_InternalValue: 0
   networkAnimatorVertical:
     m_InternalValue: 0
   networkAnimatorMoveAmout:
     m_InternalValue: 0
-  isLockOn:
+  currentTargetNetworkObjectID:
+    m_InternalValue: 0
+  isLockedOn:
     m_InternalValue: 0
   isSprinting:
     m_InternalValue: 0
   isJumping:
+    m_InternalValue: 0
+  isChargingAttack:
     m_InternalValue: 0
   currentStamina:
     m_InternalValue: 0
@@ -911,13 +917,9 @@ MonoBehaviour:
   characterAnimatorManager: {fileID: 0}
   characterCombatManager: {fileID: 0}
   characterSoundFxManager: {fileID: 0}
+  characterLocomotionManager: {fileID: 0}
+  characterGroup: 0
   isPerformingAction: 0
-  applyRootMotion: 0
-  canMove: 1
-  canRotate: 1
-  isGrounded: 1
-  respawnCharacter: 0
-  switchRightWeapon: 0
   playerAnimatorManager: {fileID: 0}
   playerLocomotionManager: {fileID: 0}
   playerNetworkManager: {fileID: 0}
@@ -937,6 +939,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9181a5bfb5ddd24abbc98a121540298, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  applyRootMotion: 0
   lastDamageAnimationPlayed: 
   hit_Forward_Medium_01: hit_Forward_Medium_01
   hit_Forward_Medium_02: hit_Forward_Medium_02
@@ -970,6 +973,10 @@ MonoBehaviour:
   gravity: -40
   groundVelocity: -20
   fallStartVelocity: -5
+  isRolling: 0
+  canMove: 1
+  canRotate: 1
+  isGrounded: 1
   player: {fileID: 0}
   verticalMovement: 0
   horizontalMovement: 0
@@ -1007,7 +1014,7 @@ MonoBehaviour:
   weaponsInLeftHandSlots:
   - {fileID: 11400000, guid: e0510ab18b0130248831f61b555e0297, type: 2}
   - {fileID: 11400000, guid: e0510ab18b0130248831f61b555e0297, type: 2}
-  - {fileID: 11400000, guid: e0510ab18b0130248831f61b555e0297, type: 2}
+  - {fileID: 11400000, guid: 0af3a706c4120ac41bdf23265e5365f1, type: 2}
   leftHandWeaponIndex: 0
 --- !u!114 &-8255143257936229975
 MonoBehaviour:
@@ -1021,7 +1028,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05f465e622e8ec04e872a49ae82b99de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bloodSpatterPrefab: {fileID: 0}
+  bloodSpatterPrefab: {fileID: 3548588485384254792, guid: e010d7d1c054bd641a08a05822733a88, type: 3}
   effectToTest: {fileID: 11400000, guid: 1ddc0f522e30aa54caf249e747b6a641, type: 2}
   processEffect: 0
 --- !u!114 &4167098534301619552
@@ -1050,6 +1057,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35c14ddcdac4fe34e93bf089ab55a1cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damageGrunts:
+  - {fileID: 8300000, guid: ec37c89a97a3a194d98cecd9bb3a61d5, type: 3}
+  - {fileID: 8300000, guid: 5db80d54d2dafd348b6cae53c6d9924a, type: 3}
+  - {fileID: 8300000, guid: 37f1bb4806a676249891c3249bf962a2, type: 3}
+  attackGrunts:
+  - {fileID: 8300000, guid: 2befdd9e638fca240b795c5cffb7aed2, type: 3}
+  - {fileID: 8300000, guid: 750dad2c35d71a44fb6d408b4d245bf8, type: 3}
+  - {fileID: 8300000, guid: 73a158e99ad07154280d61719abe8d6c, type: 3}
 --- !u!114 &-1536684457469403840
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1080,10 +1095,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2c23ce04eae7f449b2fbf3c4c253848, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
+  lastAttackAnimationPerformed: 
   currentTarget: {fileID: 0}
   currentAttackSyle: 0
   lockOnTransform: {fileID: 2795375799823547786}
   currentWeaponBeingUsed: {fileID: 0}
+  canComboWithMainHandWeapon: 0
 --- !u!95 &-8005869248301485149
 Animator:
   serializedVersion: 7

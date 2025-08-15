@@ -25,7 +25,12 @@ namespace TV
 
 
         [Header("Weapon Attack Modifiers")]
-        public float lightAttackModifier = 1.1f;   
+        public float lightAttackModifier_01 = 1.1f;
+        public float lightAttackModifier_02 = 1.2f;
+        public float heavyAttackModifier_01 = 1.5f;
+        public float heavyAttackModifier_02 = 1.8f;
+        public float chargeAttackModifier_01 = 2.0f;
+        public float chargeAttackModifier_02 = 2.5f;
 
         [Header("Stamina Costs Modifier")]
         public int baseStaminaCost = 20;
@@ -34,6 +39,9 @@ namespace TV
 
         [Header("Actions")]
         public WeaponItemAction oh_RB_Action;
+        public WeaponItemAction oh_RT_Action;
 
+        [Header("WWhooshes")]
+        public AudioClip[] whooshes;
     }
 }

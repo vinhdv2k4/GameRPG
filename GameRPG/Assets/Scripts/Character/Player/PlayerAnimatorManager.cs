@@ -11,12 +11,30 @@ namespace TV
         }
         private void OnAnimatorMove()
         {
-            if (player.applyRootMotion)
+            if (applyRootMotion)
             {
                  Vector3 velocity = player.animator.deltaPosition;
                 player.characterController.Move(velocity);
                 player.transform.rotation *= player.animator.deltaRotation;   
             }
+        }
+
+
+        public override void EnableCanDoCombo()
+        {
+            if (player.playerNetworkManager.isUsingRightHand.Value)
+            {
+                player.playerCombatManager.canComboWithMainHandWeapon = true;
+            }
+            else
+            {
+            }
+        }
+        public override void DisableCanDoCombo()
+        {
+
+            player.playerCombatManager.canComboWithMainHandWeapon = false;
+
         }
     }
 }

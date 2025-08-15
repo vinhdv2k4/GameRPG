@@ -6,6 +6,7 @@ namespace TV
     public class LightAttackWeapon : WeaponItemAction
     {
         [SerializeField] string light_Attack_01 = "Main_Light_Attack_01";
+        [SerializeField] string light_Attack_02 = "Main_Light_Attack_02";
         public override void AttemptToPerformAcrion(PlayerManager playerPerformingAction, WeaponItem weaponPerformingAction)
         {
             base.AttemptToPerformAcrion(playerPerformingAction, weaponPerformingAction);
@@ -13,7 +14,7 @@ namespace TV
                 return;
             if (playerPerformingAction.playerNetworkManager.currentStamina.Value <= 0)
                 return;
-            if(!playerPerformingAction.isGrounded)
+            if(!playerPerformingAction.characterLocomotionManager.isGrounded)
                 return;
             PerformingLightAttack(playerPerformingAction, weaponPerformingAction);  
 
@@ -21,14 +22,24 @@ namespace TV
 
         private void PerformingLightAttack(PlayerManager playerPerformingAction, WeaponItem weaponPerformingAction)
         {
-           
-            if (playerPerformingAction.playerNetworkManager.isUsingRightHand.Value)
+           if(playerPerformingAction.playerCombatManager.canComboWithMainHandWeapon && playerPerformingAction.isPerformingAction)
             {
-                playerPerformingAction.playerAnimatorManager.PlayerTargetAttackActionAnimation(AttackStyle.lightAttack,light_Attack_01,true);
+                playerPerformingAction.playerCombatManager.canComboWithMainHandWeapon = false;
+
+                if(playerPerformingAction.characterCombatManager.lastAttackAnimationPerformed == light_Attack_01)
+                {
+                    playerPerformingAction.playerAnimatorManager.PlayerTargetAttackActionAnimation(AttackStyle.lightAttack02, light_Attack_02, true);
+                }
+                else
+                {
+                    playerPerformingAction.playerAnimatorManager.PlayerTargetAttackActionAnimation(AttackStyle.lightAttack01, light_Attack_01, true);
+                }
             }
-            if (playerPerformingAction.playerNetworkManager.isUsingLeftHand.Value)
+            else if(!playerPerformingAction.isPerformingAction)
             {
+                playerPerformingAction.playerAnimatorManager.PlayerTargetAttackActionAnimation(AttackStyle.lightAttack01, light_Attack_01, true);
             }
+            
         }
     }
 }

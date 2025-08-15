@@ -1,13 +1,11 @@
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Unity.Netcode;
 namespace TV {
     public class PlayerManager : CharacterManager
     {
-        [Header("DEBUG MENU")]
-        [SerializeField] bool respawnCharacter = false;
-        [SerializeField] bool switchRightWeapon = false;
+
 
         [HideInInspector]public PlayerAnimatorManager playerAnimatorManager;
         [HideInInspector] public PlayerLocomotionManager playerLocomotionManager;
@@ -38,7 +36,7 @@ namespace TV {
                 return;
             playerLocomotionManager.HandleAllMovement();
             playerStatsManager.RegenarateStamina();
-            DebugMenu();
+           
 
         }
 
@@ -83,13 +81,41 @@ namespace TV {
             playerNetworkManager.currentLeftHandWeaponID.OnValueChanged += playerNetworkManager.OnCurrentLeftHandWeaponIDChange;
             playerNetworkManager.currentWeaponBeingUsed.OnValueChanged += playerNetworkManager.OnCurrentWeaponBeingUsedIDChange;
 
-                
+            //Flag
+            playerNetworkManager.isChargingAttack.OnValueChanged += playerNetworkManager.OnIsChargingAttackChange;
+
             //upon Connecting, if player is owner, load the game data from current character data
             if (IsOwner && !IsServer)
             {
                 LoadGameDataFromCurrentCharacterData(ref WorldGameSave.instance.currentCharacterData);
             }
         }
+
+        public override void OnNetworkDespawn()
+        {
+            base.OnNetworkDespawn();
+            NetworkManager.Singleton.OnClientConnectedCallback -= OnClientConnectedCallBack;
+            if (IsOwner)
+            {
+                playerNetworkManager.vitality.OnValueChanged -= playerNetworkManager.SetNewMaxHealthValue;
+                playerNetworkManager.endurance.OnValueChanged -= playerNetworkManager.SetNewMaxStaminaValue;
+                playerNetworkManager.currentHealth.OnValueChanged -= PlayerUIManger.instance.playerUIHudManager.SetNewHealthValue;
+                playerNetworkManager.currentStamina.OnValueChanged -= PlayerUIManger.instance.playerUIHudManager.SetNewStaminaValue;
+                playerNetworkManager.currentStamina.OnValueChanged -= playerStatsManager.ResetStaminaRegenTimer;
+            }
+            //Stats
+            playerNetworkManager.currentHealth.OnValueChanged -= playerNetworkManager.CheckHP;
+            //Lock on
+            playerNetworkManager.isLockedOn.OnValueChanged -= playerNetworkManager.OnIsLockedOnChange;
+            playerNetworkManager.currentTargetNetworkObjectID.OnValueChanged -= playerNetworkManager.OnLockTargetIDChange;
+            //Equipment
+            playerNetworkManager.currentRightHandWeaponID.OnValueChanged -= playerNetworkManager.OnCurrentRightHandWeaponIDChange;
+            playerNetworkManager.currentLeftHandWeaponID.OnValueChanged -= playerNetworkManager.OnCurrentLeftHandWeaponIDChange;
+            playerNetworkManager.currentWeaponBeingUsed.OnValueChanged -= playerNetworkManager.OnCurrentWeaponBeingUsedIDChange;
+            //Flag
+            playerNetworkManager.isChargingAttack.OnValueChanged -= playerNetworkManager.OnIsChargingAttackChange;
+        }
+
 
         private void OnClientConnectedCallBack(ulong clientID)
         {
@@ -174,19 +200,6 @@ namespace TV {
             }
         }
         
-        private void DebugMenu()
-        {
-            if (respawnCharacter)
-            {
-                respawnCharacter = false;
-                ReviveCharacter();
-            }
-
-            if (switchRightWeapon)
-            {
-                switchRightWeapon = false;
-                playerEquitmentManager.SwitchRightWeapon();
-            }
-        }
+       
     }
 }

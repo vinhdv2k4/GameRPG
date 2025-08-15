@@ -1,7 +1,7 @@
 using UnityEngine;
 namespace TV { 
 
-public class CharaterLocomotionManager : MonoBehaviour
+public class CharacterLocomotionManager : MonoBehaviour
 {
         CharacterManager character;
 
@@ -17,7 +17,10 @@ public class CharaterLocomotionManager : MonoBehaviour
         protected float inAirTimer = 0;
 
         [Header("Frag")]
-        [SerializeField] public bool isRolling = false;
+         public bool isRolling = false;
+        public bool canMove = true;
+        public bool canRotate = true;
+        public bool isGrounded = true;
 
 
         protected virtual void Awake()
@@ -27,7 +30,7 @@ public class CharaterLocomotionManager : MonoBehaviour
         protected virtual void Update()
         {
             HandleGroundCheck();
-            if (character.isGrounded)
+            if (isGrounded)
             {
                 if (yVelocity.y < 0)
                 {
@@ -55,12 +58,21 @@ public class CharaterLocomotionManager : MonoBehaviour
 
         protected void HandleGroundCheck()
         {
-            character.isGrounded = Physics.CheckSphere(character.transform.position,groundCheckRadius, groundLayer);
+            isGrounded = Physics.CheckSphere(character.transform.position,groundCheckRadius, groundLayer);
         }
 
         protected void OnDrawGizmosSelected()
         {
             //Gizmos.DrawSphere(character.transform.position, groundCheckRadius);
+        }
+
+        public void EnableCanRotate()
+        {
+            canRotate = true;   
+        }
+        public void DisableCanRotate()
+        {
+            canRotate = false;
         }
     }
 }

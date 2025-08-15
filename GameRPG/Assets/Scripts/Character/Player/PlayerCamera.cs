@@ -161,7 +161,7 @@ namespace TV
             Collider[] collliders = Physics.OverlapSphere(player.transform.position, LockOnRadius, WorldUnityManager.instance.GetCharacterLayers());
             for (int i=0; i< collliders.Length; i++)
             {
-                CharacterManager lockOnTarget = collliders[i].GetComponentInParent<CharacterManager>();
+                CharacterManager lockOnTarget = collliders[i].GetComponent<CharacterManager>();
                 if(lockOnTarget != null)
                 {
                     Vector3 lockOnTargetDirection = lockOnTarget.transform.position - player.transform.position;

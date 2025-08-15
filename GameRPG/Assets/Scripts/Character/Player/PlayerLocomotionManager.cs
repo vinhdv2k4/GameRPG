@@ -2,7 +2,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 namespace TV
 {
-    public class PlayerLocomotionManager : CharaterLocomotionManager
+    public class PlayerLocomotionManager : CharacterLocomotionManager
     {
         public PlayerManager player;
         [HideInInspector] public float verticalMovement;
@@ -89,7 +89,7 @@ namespace TV
             {
                 return;
             }
-            if (!player.canRotate)
+            if (!canRotate)
                 return;
           
             GetMovementValues();
@@ -120,7 +120,7 @@ namespace TV
             {
                 return;
             }   
-            if (!player.canRotate)
+            if (!canRotate)
                 return;
 
             if (player.playerNetworkManager.isLockedOn.Value)
@@ -208,7 +208,7 @@ namespace TV
 
         private void HandleFreeFallMovement()
         {
-            if (!player.isGrounded)
+            if (!isGrounded)
             {
                 Vector3 freeAllDirection;
                 freeAllDirection = PlayerCamera.instance.cameraObject.transform.forward * PlayerInputManager.instance.verticalInput;
@@ -257,7 +257,7 @@ namespace TV
                 return;
             if (player.playerNetworkManager.isJumping.Value)
                 return;
-            if (!player.isGrounded)
+            if (!isGrounded)
                 return;
 
             player.playerAnimatorManager.PlayerTargetActionAnimation("Main_Jump", false);

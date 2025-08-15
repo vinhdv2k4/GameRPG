@@ -3,6 +3,13 @@ namespace TV{
     public class CharacterSoundFxManager : MonoBehaviour
     {
      private AudioSource audioSource;
+
+        [Header("Damage Grunts")]
+        [SerializeField] protected AudioClip[] damageGrunts;
+
+        [Header("Attack Grunts")]
+        [SerializeField] protected AudioClip[] attackGrunts;
+
         protected virtual void Awake()
         {
             audioSource = GetComponent<AudioSource>();
@@ -21,6 +28,16 @@ namespace TV{
         public void PlayRollSoundFX()
         {
             audioSource.PlayOneShot(WorldSoundFXManager.instance.rollSFX);
+        }
+
+        public virtual void PlayAttackGrunt()
+        {
+            PlayerSoundFX(WorldSoundFXManager.instance.ChoseRandomSFXFromArray(attackGrunts));
+        }
+
+        public virtual void PlayDamageGrunt()
+        {
+            PlayerSoundFX(WorldSoundFXManager.instance.ChoseRandomSFXFromArray(damageGrunts));
         }
     }
 }
