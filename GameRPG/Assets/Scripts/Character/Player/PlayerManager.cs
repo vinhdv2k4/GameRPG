@@ -57,7 +57,7 @@ namespace TV {
             {
                 PlayerCamera.instance.player = this;
                 PlayerInputManager.instance.player = this;
-                WorldGameSave.instance.player = this;
+                WorldGameSaveManager.instance.player = this;
 
                 playerNetworkManager.vitality.OnValueChanged += playerNetworkManager.SetNewMaxHealthValue;
                 playerNetworkManager.endurance.OnValueChanged += playerNetworkManager.SetNewMaxStaminaValue;
@@ -87,7 +87,7 @@ namespace TV {
             //upon Connecting, if player is owner, load the game data from current character data
             if (IsOwner && !IsServer)
             {
-                LoadGameDataFromCurrentCharacterData(ref WorldGameSave.instance.currentCharacterData);
+                LoadGameDataFromCurrentCharacterData(ref WorldGameSaveManager.instance.currentCharacterData);
             }
         }
 

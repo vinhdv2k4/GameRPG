@@ -32,11 +32,13 @@ namespace TV{
 
         public virtual void PlayAttackGrunt()
         {
+            if(attackGrunts.Length>0)
             PlayerSoundFX(WorldSoundFXManager.instance.ChoseRandomSFXFromArray(attackGrunts));
         }
 
         public virtual void PlayDamageGrunt()
         {
+            if(damageGrunts.Length>0)
             PlayerSoundFX(WorldSoundFXManager.instance.ChoseRandomSFXFromArray(damageGrunts));
         }
     }

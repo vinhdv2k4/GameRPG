@@ -47,9 +47,7 @@ namespace TV
 
         public void StartNewGame()
         {
-            WorldGameSave.instance.CreateNewGame();
-        
-
+            WorldGameSaveManager.instance.CreateNewGame();
         }
         
         public void OpenLoadGame()
@@ -97,7 +95,7 @@ namespace TV
         {
             deleteCharacterPopup.SetActive(false);
            
-            WorldGameSave.instance.DeleteGame(currentSelectedSlots);
+            WorldGameSaveManager.instance.DeleteGame(currentSelectedSlots);
             loadScreenMenu.SetActive(false);
             loadScreenMenu.SetActive(true);
             loadMenureturnButton.Select();

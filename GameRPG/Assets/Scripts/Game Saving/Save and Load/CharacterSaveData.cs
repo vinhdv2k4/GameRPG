@@ -25,5 +25,16 @@ namespace TV
         public int vitality;
         public int endurance;
 
+        [Header("Bosses")]
+        public SerializableDictionary<int, bool> bossesDefeated;
+        public SerializableDictionary<int, bool> bossesAwakened;
+
+        public CharacterSaveData()
+        {
+            bossesDefeated = new SerializableDictionary<int, bool>();
+            bossesAwakened = new SerializableDictionary<int, bool>();
+        }
+
+
     }
 }

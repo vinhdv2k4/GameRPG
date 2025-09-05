@@ -5,7 +5,7 @@ namespace TV
 {
     public class Ui_Save_Slot : MonoBehaviour
     {
-        SaveFileDataWirte saveFileDataWirte;
+        SaveFileDataWirter saveFileDataWirte;
 
         [Header("Game Slot")]
         public CharacterSlot characterSlot;
@@ -21,25 +21,25 @@ namespace TV
 
         private void LoadSaveSlots()
         {
-            saveFileDataWirte = new SaveFileDataWirte();
-            saveFileDataWirte.saveDataDirectionPath = Application.persistentDataPath;
-            saveFileDataWirte.saveFileName = WorldGameSave.instance.DecideCharacterFileOnBasedOnCharacterSlotBeingUsed(characterSlot);
+            saveFileDataWirte = new SaveFileDataWirter();
+            saveFileDataWirte.saveDataDirectoryPath = Application.persistentDataPath;
+            saveFileDataWirte.saveFileName = WorldGameSaveManager.instance.DecideCharacterFileOnBasedOnCharacterSlotBeingUsed(characterSlot);
 
             if (saveFileDataWirte.CheckToSeeFileExits())
             {
                 switch (characterSlot)
                 {
                     case CharacterSlot.CharacterSlot01:
-                        characterName.text = WorldGameSave.instance.characterSlot1.characterName;
+                        characterName.text = WorldGameSaveManager.instance.characterSlot1.characterName;
                         break;
                     case CharacterSlot.CharacterSlot02:
-                        characterName.text = WorldGameSave.instance.characterSlot2.characterName;
+                        characterName.text = WorldGameSaveManager.instance.characterSlot2.characterName;
                         break;
                     case CharacterSlot.CharacterSlot03:
-                        characterName.text = WorldGameSave.instance.characterSlot3.characterName;
+                        characterName.text = WorldGameSaveManager.instance.characterSlot3.characterName;
                         break;
                     case CharacterSlot.CharacterSlot04:
-                        characterName.text = WorldGameSave.instance.characterSlot4.characterName;
+                        characterName.text = WorldGameSaveManager.instance.characterSlot4.characterName;
                         break;
                 }
             }
@@ -51,8 +51,8 @@ namespace TV
         }
         public void LoadGameFromCharacter()
         {
-            WorldGameSave.instance.currentCharacterSlotSavedUsed = characterSlot;
-            WorldGameSave.instance.LoadGame();
+            WorldGameSaveManager.instance.currentCharacterSlotSavedUsed = characterSlot;
+            WorldGameSaveManager.instance.LoadGame();
         }
 
         public void SelectCurrentSlot()

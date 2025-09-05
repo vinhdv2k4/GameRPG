@@ -8,7 +8,6 @@ namespace TV
         public float actionRecoveryTimer = 0f;
 
         [Header("TargetImformation")]
-        public bool hasScreamedOnDetection = false;
         public float distanceFromTarget;
         public float viewableAngle;
         public Vector3 targetDirection;
@@ -63,7 +62,6 @@ namespace TV
                             targetDirection = targetCharacter.transform.position - transform.position;
                             viewableAngle = WorldUnityManager.instance.GetAngleOfTarget(transform, targetDirection);
                             aiCharacter.characterCombatManager.SetTarget(targetCharacter);
-                            PerformScreamOnDetection(aiCharacter);
                             PivotTowardsTarget(aiCharacter);
                         }
                     }
@@ -71,15 +69,7 @@ namespace TV
             }
         }
 
-        private void PerformScreamOnDetection(CharacterAIManager aiCharacter)
-        {
-         
-            if (!hasScreamedOnDetection && !aiCharacter.isPerformingAction)
-            {
-                aiCharacter.characterAnimatorManager.PlayerTargetActionAnimation("Scream_01", true);
-                hasScreamedOnDetection = true; 
-            }
-        }
+     
 
         public void PivotTowardsTarget(CharacterAIManager aiCharacter)
         {

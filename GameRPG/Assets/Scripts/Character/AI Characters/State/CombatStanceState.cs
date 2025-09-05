@@ -19,20 +19,30 @@ namespace TV
         [SerializeField] protected int chanceToPerformCombo = 25;
         protected bool hasRolledComboChance = false;
 
+        [Header("Pivots")]
+        [SerializeField] protected bool enablePivot;
+
         [Header("Engagement Distance")]
         [SerializeField] public float maximumEngagementDistance = 5;
         public override AiState Tick(CharacterAIManager aiCharacter)
         {
             if (aiCharacter.isPerformingAction)
                 return this;
+
             if(!aiCharacter.navMeshAgent.enabled)
                 aiCharacter.navMeshAgent.enabled = true;
-            if (!aiCharacter.aiCharacterNetworkManager.isMoving.Value) {
-                if (aiCharacter.aiCharacterCombatManager.viewableAngle < -30 || aiCharacter.aiCharacterCombatManager.viewableAngle > 30)
+
+            if(enablePivot)
+            {
+                if (!aiCharacter.aiCharacterNetworkManager.isMoving.Value)
                 {
-                    aiCharacter.aiCharacterCombatManager.PivotTowardsTarget(aiCharacter);
+                    if (aiCharacter.aiCharacterCombatManager.viewableAngle < -30 || aiCharacter.aiCharacterCombatManager.viewableAngle > 30)
+                    {
+                        aiCharacter.aiCharacterCombatManager.PivotTowardsTarget(aiCharacter);
+                    }
                 }
             }
+           
             aiCharacter.aiCharacterCombatManager.RotateTowardsAgent(aiCharacter);
             if (aiCharacter.aiCharacterCombatManager.currentTarget == null)
             {

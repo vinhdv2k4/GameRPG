@@ -9,9 +9,6 @@ namespace TV
     public class WorldAiManager : MonoBehaviour
     {
         public  static WorldAiManager instance;
-
-
-
         [Header("Characters")]
         [SerializeField] List<AiCharacterSpawner> aiCharacterSpawners;
         [SerializeField] List<GameObject> spawnedCharacters;
@@ -43,6 +40,10 @@ namespace TV
             {
                     character.GetComponent<NetworkObject>().Despawn();
             }
+        }
+        private void DisableAllCharacters()
+        {
+
         }
 
     }

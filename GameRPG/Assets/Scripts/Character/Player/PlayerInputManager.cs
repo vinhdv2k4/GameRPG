@@ -71,7 +71,7 @@ namespace TV
         private void OnSceneChanged(Scene oldScene, Scene newScene)
         {
             // neu loa den scene moi thi bat input
-            if (newScene.buildIndex == WorldGameSave.instance.GetWorldSceneIndex())
+            if (newScene.buildIndex == WorldGameSaveManager.instance.GetWorldSceneIndex())
             {
                 instance.enabled = true;
                 if(playerControll != null)
